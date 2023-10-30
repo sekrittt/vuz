@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "задача-SRS-27.09.2023",
+      "appliesTo": "cycles-4/SRS-27.09.2023.cpp",
+      "type": "launch"
+    }
+  ]
+}
