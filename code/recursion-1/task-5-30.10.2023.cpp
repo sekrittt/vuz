@@ -7,6 +7,7 @@ int F2(int);
 
 int F1(int number)
 {
+    cout << "F1(" << number << ") -> ";
     if (number == 0)
         return 2;
     else
@@ -17,6 +18,7 @@ int F1(int number)
 }
 int F2(int number)
 {
+    cout << "F2(" << number << ") -> ";
     if (number == 0)
         return 1;
     else
@@ -28,6 +30,9 @@ int F2(int number)
 
 int main()
 {
-    cout << F1(5) << " " << F2(5) << endl;
+    int n;
+    cout << "Please enter n: ";
+    cin >> n;
+    cout << F1(n) << endl << endl << F2(n) << endl;
     return 0;
 }
