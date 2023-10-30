@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "*.py": "python",
-        "iostream": "cpp",
-        "cmath": "cpp",
-        "ostream": "cpp"
-    },
-    "files.autoSave": "afterDelay"
-}
