@@ -1,3 +1,4 @@
+// Жабо Дмитрий БАС-1
 #include <iostream>
 
 using namespace std;
@@ -26,7 +27,6 @@ bool isEven(int b)
 		return true;
 	}
 	int g = countOnes(b);
-	cout << "countOnes(" << b << ") = " << g << endl;
 	return g%2 == 1;
 }
 
