@@ -8,7 +8,7 @@ void slovo1(int n)
 {
 	if (n > 0) {
 		cout << "gav1 ";
-		slovo2(n-1);
+		slovo2(n);
 	}
 }
 
