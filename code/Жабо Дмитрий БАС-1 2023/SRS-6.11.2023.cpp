@@ -16,7 +16,7 @@ void print_array(int *M, int len)
         cout << "}" << endl;
 }
 
-int sum(int M[], int len)
+int sum(int M[], int len) // Function for calculate sum of elements after first negative by value element
 {
         int s = 0;
 	bool flag = false;
@@ -28,7 +28,7 @@ int sum(int M[], int len)
         return s;
 }
 
-long long mul(int M[], int len)
+long long prod(int M[], int len) // Function for calculate product
 {
         long long m = 1;
         for (int i = 0; i < len; i++)
@@ -42,20 +42,20 @@ long long mul(int M[], int len)
 
 int main()
 {
-	fstream f;
-	f.open("file.txt", ios::in);
-	const int N5 = 10;
-	int MASSIV_5[N5];
+	fstream f; // File stream variable description
+	f.open("file.txt", ios::in); // Open file
+	const int N5 = 10; // Array size
+	int MASSIV_5[N5]; // Array description
 	for (int i = 0; i < N5; i++)
 	{
-		f >> MASSIV_5[i];
+		f >> MASSIV_5[i]; // Read from file and write to i-element of array
 	}
-	print_array(MASSIV_5, N5);
-	int S5 = sum(MASSIV_5, N5);
-	long long P5 = mul(MASSIV_5, N5);
+	print_array(MASSIV_5, N5); // Output array
+	int S5 = sum(MASSIV_5, N5); // Calculate elements sum of array
+	long long P5 = prod(MASSIV_5, N5); // Calculate elements product of array
 	cout << "S5 = " << S5 << endl;
 	cout << "P5 = " << P5 << endl;
-	f.close();
+	f.close(); // Close file
 	return 0;
 }
 
