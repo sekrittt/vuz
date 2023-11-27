@@ -105,7 +105,19 @@ namespace Array
         template <typename T>
         void read_from_file()
         {
-                
+
+        }
+
+        template <typename T>
+        T *slice(T *M, int start, int end)
+        {
+                int n = Array::length(M);
+                T *a = new T[end - start];
+                for (int i = start; i < end; i++)
+                {
+                        *(a + i - start) = *(M + i);
+                }
+                return a;
         }
 }
 
