@@ -1,11 +1,12 @@
+// Жабо Дмитрий БАС-1
 #include <iostream>
 #include <ctime>
 
 using namespace std;
 
-int *fill_array(int len)
+long long int *fill_array(int len)
 {
-    int *M = new int[len];
+    long long int *M = new long long int[len];
     for (int i = 0; i < len; i++)
     {
         *(M + i) = rand() % 100;
@@ -13,7 +14,7 @@ int *fill_array(int len)
     return M;
 }
 
-void print_array(int *M, int len)
+void print_array(long long int *M, int len)
 {
     cout << "{";
     for (int i = 0; i < len; i++)
@@ -25,7 +26,7 @@ void print_array(int *M, int len)
     cout << "}" << endl;
 }
 
-void print_even_array(int *M, int len)
+void print_even_array(long long int *M, int len)
 {
     cout << "{";
     int c = 0;
@@ -42,9 +43,9 @@ void print_even_array(int *M, int len)
     cout << "}" << endl;
 }
 
-int array_sum(int *M, int len)
+long long int array_sum(long long int *M, int len)
 {
-    int s = 0;
+    long long int s = 0;
     for (int i = 0; i < len; i++)
     {
         s += *(M + i);
@@ -52,9 +53,9 @@ int array_sum(int *M, int len)
     return s;
 }
 
-int array_sum_odd(int *M, int len)
+long long int array_sum_odd(long long int *M, int len)
 {
-    int s = 0;
+    long long int s = 0;
     for (int i = 0; i < len; i++)
     {
         if (i % 2 != 0)
@@ -65,7 +66,7 @@ int array_sum_odd(int *M, int len)
     return s;
 }
 
-long long int array_mul(int *M, int len)
+long long int array_mul(long long int *M, int len)
 {
     long long int m = *M;
     for (int i = 1; i < len; i++)
@@ -75,17 +76,7 @@ long long int array_mul(int *M, int len)
     return m;
 }
 
-double array_argv(int *M, int len)
-{
-    double a = 0;
-    for (int i = 0; i < len; i++)
-    {
-        a += *(M + i) / (double)len;
-    }
-    return a;
-}
-
-int *array_element_insert_after(int *M, int len, int el, int index)
+long long int *array_element_insert_after(long long int *M, int len, long long int el, int index)
 {
     for (int i = len - 1; i > index; i--)
     {
@@ -95,20 +86,17 @@ int *array_element_insert_after(int *M, int len, int el, int index)
     return M;
 }
 
-int *array_element_insert_before(int *M, int len, int el, int index)
+long long int *array_element_insert_before(long long int *M, int len, long long int el, int index)
 {
     for (int i = len - 1; i >= index; i--)
     {
         *(M + i + 1) = *(M + i);
     }
-    if (index > 0)
-        *(M + index) = el;
-    else
-        *(M) = el;
+    *(M + index) = el;
     return M;
 }
 
-int find_index(int *M, int len, int el)
+int find_index(long long int *M, int len, long long int el)
 {
     for (int i = 0; i < len; i++)
     {
@@ -124,18 +112,16 @@ int main()
     int len;
     cout << "Please enter array length: ";
     cin >> len;
-    int *M = fill_array(len+2);
+    long long int *M = fill_array(len+2);
     cout << "Array: ";
     print_array(M, len);
     cout << "Array address (by pointer): " << M << ", (by index): " << &M[0] << endl;
-    int s = array_sum(M, len);
+    long long int s = array_sum(M, len);
     cout << "Array sum: " << s << endl;
     long long int m = array_mul(M, len);
     cout << "Array mul: " << m << endl;
-    int s1 = array_sum_odd(M, len);
+    long long int s1 = array_sum_odd(M, len);
     cout << "Array sum of odd elements by index: " << s1 << endl;
-    // double a = array_argv(M, len);
-    // cout << "Array argv: " << a << endl;
     cout << "Array argv: " << s / (double)len << endl;
     cout << "Array (only even elements): ";
     print_even_array(M, len);

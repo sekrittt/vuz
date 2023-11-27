@@ -5,7 +5,7 @@ using namespace std;
 namespace Array
 {
         template <typename T, int N>
-        int length(T (&arr)[N])
+        int length(T (&M)[N])
         {
                 return N;
         }
@@ -100,6 +100,12 @@ namespace Array
                         *(M + i) = *(M + len - 1 - i);
                         *(M + len -1 - i) = tmp;
                 }
+        }
+
+        template <typename T>
+        void read_from_file()
+        {
+                
         }
 }
 
