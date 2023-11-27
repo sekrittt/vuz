@@ -2,77 +2,110 @@
 
 using namespace std;
 
-template<typename T>
-void print_array(T *M, int len)
+namespace Array
 {
-        cout << "{";
-        for (int i = 0; i < len; i++)
+        template <typename T, int N>
+        int length(T (&arr)[N])
         {
-                cout << M[i];
-                if (i < len - 1) cout << ", ";
+                return N;
         }
-        cout << "}" << endl;
-}
 
-template<typename T>
-T *move_array_elements(T M[], int &len_M, int from, int len_move)
-{
-        T *arr = new T[len_M+len_move];
-        for (int i = from; i < len_M; i++)
+        template <typename T>
+        void print(T *M)
         {
-                arr[i+len_move] = M[i];
+                cout << "{";
+                int len = Array::length(M);
+                for (int i = 0; i < len; i++)
+                {
+                        cout << M[i];
+                        if (i < len - 1)
+                                cout << ", ";
+                }
+                cout << "}" << endl;
         }
-        for (int i = 0; i < from; i++)
-        {
-                arr[i] = M[i];
-        }
-	len_M += len_move;
-        return arr;
-}
 
-template<typename T>
-int find_index(T *M, int len, T el)
-{
-        for (int i = 0; i < len; i++)
+        template <typename T>
+        T *move_elements(T *M, int from, int len_move)
         {
-                if (M[i] == el) return i;
+                int len_M = Array::length(M);
+                T *arr = new T[len_M + len_move];
+                for (int i = from; i < len_M; i++)
+                {
+                        arr[i + len_move] = *(M+i);
+                }
+                for (int i = 0; i < from; i++)
+                {
+                        arr[i] = *(M + i);
+                }
+                del[] M;
+                return arr;
         }
-        return -1;
-}
 
-template<typename T>
-T array_sum(T M[], int len)
-{
-        T s = 0;
-        for (int i = 0; i < len; i++)
+        template <typename T>
+        int index(T *M, T el)
         {
-                s += M[i];
+                int len = Array::length(M);
+                for (int i = 0; i < len; i++)
+                {
+                        if (M[i] == el)
+                                return i;
+                }
+                return -1;
         }
-        return s;
-}
 
-template<typename T>
-double array_argv(T M[], int len)
-{
-        double a = 0;
-        for (int i = 0; i < len; i++)
+        template <typename T>
+        T sum(T M[])
         {
-                a+=M[i]/(double)len;
+                int len = Array::length(M);
+                T s = 0;
+                for (int i = 0; i < len; i++)
+                {
+                        s += M[i];
+                }
+                return s;
         }
-        return a;
-}
 
-template<typename T>
-bool includes(T M[], int len, T el)
-{
-	for (int i = 0; i < len; i++)
-	{
-		if (M[i] == el) return true;
-	}
-	return false;
+        template <typename T>
+        double argv(T M[])
+        {
+                int len = Array::length(M);
+                double a = 0;
+                for (int i = 0; i < len; i++)
+                {
+                        a += M[i] / (double)len;
+                }
+                return a;
+        }
+
+        template <typename T>
+        bool includes(T M[], T el)
+        {
+                int len = Array::length(M);
+                for (int i = 0; i < len; i++)
+                {
+                        if (M[i] == el)
+                                return true;
+                }
+                return false;
+        }
+
+        template <typename T>
+        void reverse(T *M)
+        {
+                int len = Array::length(M);
+                T tmp = 0;
+                for (int i = 0; i < len / 2; i++)
+                {
+                        tmp = *(M + i);
+                        *(M + i) = *(M + len - 1 - i);
+                        *(M + len -1 - i) = tmp;
+                }
+        }
 }
 
 int main()
 {
-	return 0;
+        double M[] = {1, 2, 3, 5};
+        cout << Array::length(M) << endl;
+        return 0;
 }
