@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -31,13 +33,13 @@ namespace Array
                 T *arr = new T[len_M + len_move];
                 for (int i = from; i < len_M; i++)
                 {
-                        arr[i + len_move] = *(M+i);
+                        arr[i + len_move] = *(M + i);
                 }
                 for (int i = 0; i < from; i++)
                 {
                         arr[i] = *(M + i);
                 }
-                del[] M;
+                delete[] M;
                 return arr;
         }
 
@@ -98,14 +100,25 @@ namespace Array
                 {
                         tmp = *(M + i);
                         *(M + i) = *(M + len - 1 - i);
-                        *(M + len -1 - i) = tmp;
+                        *(M + len - 1 - i) = tmp;
                 }
         }
 
         template <typename T>
-        void read_from_file()
+        T *read_from_file(string filename)
         {
-
+                ifstream F;
+                F.open(filename);
+                int type_size = sizeof(T);
+                T *M = (T *)malloc(0 * type_size);
+                int count = 0;
+                while (!F.eof())
+                {
+                        count++;
+                        M = (T *)realloc(M, count * type_size);
+                        F >> *(M+count);
+                }
+                return M;
         }
 
         template <typename T>
@@ -123,7 +136,7 @@ namespace Array
 
 int main()
 {
-        double M[] = {1, 2, 3, 5};
-        cout << Array::length(M) << endl;
+        int *M = Array::read_from_file<int>("arrays-6/file1.txt");
+        Array::print(M);
         return 0;
 }
