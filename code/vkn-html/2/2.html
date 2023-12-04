@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JaVaScRiPt | 2</title>
+</head>
+
+<body>
+    <a href='1.html'>1</a>
+    <a href='3.html'>3</a>
+    <a href='4.html'>4</a>
+    <br>
+    <form action="# ">
+        <input type="text" name="inp">
+        <button onclick="alert(this.parentElement[0].value);f1()">Батон</button>
+    </form>
+    <button onclick="location.href=`${Math.floor(Math.random() * (4 - 1 + 1)) + 1}.html`">Случайный файл</button>
+    <script>
+        function f1(){
+            let s1 = 'zzzzz...<br>'
+            let s2 = 'Wake Up!'
+            document.write(s1, s2)
+        }
+    </script>
+</body>
+
+</html>

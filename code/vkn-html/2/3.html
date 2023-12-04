@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JaVaScRiPt | 3</title>
+</head>
+
+<body>
+    <a href='1.html'>1</a>
+    <a href='2.html'>2</a>
+    <a href='4.html'>4</a>
+    <br>
+    <input type="number" id="age">
+    <button onclick="f1()">Click Me!</button>
+    <br>
+    <input type="text" id="nyam">
+    <button onclick="get_cost()">Click Me!</button>
+    <script>
+        let d = document.getElementById('age')
+        let n = document.getElementById('nyam')
+        function f1() {
+            let age = parseInt(d.value)
+            if (age >= 18) {
+                location.href = `${Math.floor(Math.random() * (4 - 1 + 1)) + 1}.html`
+            } else {
+                alert('Вам нет 18-ти лет!')
+            }
+        }
+        function get_cost() {
+            switch (n.value) {
+                case 'сэндвич':
+                    alert('25$')
+                    break;
+                case 'пудинг':
+                    alert('10$')
+                    break;
+                case 'слойка':
+                    alert('30$')
+                    break;
+                case 'торт':
+                    alert('100$')
+                    break;
+                case 'тортик':
+                    alert('free!')
+                    break;
+                default:
+                    alert('А такого в меню нет!')
+                    break;
+            }
+        }
+    </script>
+</body>
+
+</html>
