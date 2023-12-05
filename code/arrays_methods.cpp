@@ -134,6 +134,31 @@ namespace Array
         }
 }
 
+template<typename T>
+class CArray
+{
+private:
+    T *els;
+    int type_size = sizeof(T);
+public:
+    CArray();
+    read_from_file(string filename)
+    {
+        ifstream F;
+        F.open(filename);
+        int type_size = sizeof(T);
+        this->els = (T *)malloc(0 * type_size);
+        while (!F.eof())
+        {
+            this->length++;
+            this->els = (T *)realloc(this->els, this->length * type_size);
+            F >> *(this->els + this->length-1);
+        }
+    }
+    int length = 0;
+};
+
+
 int main()
 {
         int *M = Array::read_from_file<int>("arrays-6/file1.txt");

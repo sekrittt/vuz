@@ -32,24 +32,24 @@ void shellsort(int *a, int n)
     int h[t] = {9, 5, 3, 1};
     for (m = 0; m < t; m++)
     {
-        k = h[m];
-        s = -k;
-        for (i = k + 1; i < n; i++)
+        k = h[m]; // 9; 5
+        s = -k;   //-9; -5;
+        for (i = k; i < n; i++)
         {
             x = *(a + i);
-            j = i - k;
+            j = i - k;//0 (9-9)
             if (s == 0)
             {
                 s = -k;
-                s = s + 1;
+                s += 1;
                 *(a + s) = x;
             }
-            while (x < a[j])
+            while (x < a[j] && j >= 0)
             {
                 *(a + j + k) = *(a + j);
-                j = j - k;
+                j = j - k; // 0-9 = -9;
             }
-            *(a + j + k) = x;
+            *(a + j + k) = x; //
         }
     }
 }
@@ -83,8 +83,8 @@ int main()
     int *a = new int[n];
     fill_worst(a, n);
     array_print(a, n);
-    shell_sort_2(a, n);
-    // shellsort(a, n);
+    // shell_sort_2(a, n);
+    shellsort(a, n);
     array_print(a, n);
     return 0;
 }
