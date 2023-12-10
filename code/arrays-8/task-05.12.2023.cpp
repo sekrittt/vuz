@@ -38,7 +38,7 @@ int find_index(int **A, int N, int M)
     {
         for (int j = 0; j < M; j++)
         {
-            if (A[N][M] == 0 && _index == -1)
+            if (A[i][j] == 0 && _index == -1)
             {
                 _index = j;
             }
