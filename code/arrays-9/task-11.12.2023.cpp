@@ -20,19 +20,19 @@ void array_print(int *A, int len) // функция для вывода масс
 void fill_worst(int *A, int n) // заполнение в худшем
 {                              //
     // int G[9] = {55, 50, 44, 42, 39, 32, 23, 20, 15};
-    int el = rand() % 10;        // первый элемент
-    for (int i = n; i >= 0; i--) // проход для заполнения массива
-    {                            //
-        *(A + i) = el;         // присваивание элементу массива el
-        el += rand() % 10;       // след эл + предыдущий (но шаг -1)
-    } //
+    int el = rand() % 10;            // первый элемент
+    for (int i = n - 1; i >= 0; i--) // проход для заполнения массива
+    {                                //
+        *(A + i) = el;               // присваивание элементу массива el
+        el += rand() % 10;           // след эл + предыдущий (но шаг -1)
+    }                                //
 }
 
-int * array_sort(int *A, int n)
+int *array_sort(int *A, int n)
 {
-    int h = sqrt(n);
+    int h = round(sqrt((float)n));
     h += (h * h) < n;
-    cout << h << endl;
+    int h1 = round(n / (float)h);
     // return;
     int *B = new int[h]; // Мы же можем создать переменную в которой будем сохранять минимум
     int *C = new int[n];
@@ -43,14 +43,18 @@ int * array_sort(int *A, int n)
     {
         for (int i = 0; i < h; i++)
         {
-            *(B + i) = *(A + ((int)h * i));
-            *(A_indexes + i) = h * i;
+            *(B + i) = *(A + (h1 * i));
+            *(A_indexes + i) = h1 * i;
             for (int j = 1; j < h; j++)
             {
-                if (*(A + (j + (int)h * i)) < *(B + i))
+                if (j + h1 * i >= n)
                 {
-                    *(B + i) = *(A + (j + (int)h * i));
-                    *(A_indexes + i) = (j + h * i);
+                    continue;
+                }
+                if (*(A + (j + h1 * i)) < *(B + i))
+                {
+                    *(B + i) = *(A + (j + h1 * i));
+                    *(A_indexes + i) = (j + h1 * i);
                 }
             }
         }
@@ -74,7 +78,9 @@ int * array_sort(int *A, int n)
 int main()
 {
     srand(time(0));
-    int n = 6;
+    int n;
+    cout << "Please enter n: ";
+    cin >> n;
     int *A = new int[n];
     fill_worst(A, n);
     cout << "Array A = ";
