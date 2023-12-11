@@ -8,13 +8,33 @@
 </head>
 
 <body>
+    <script>
+        let students = []
+    </script>
     <form onsubmit="onSubmit()">
         <input type="text" placeholder="Имя" id="name">
         <input type="text" placeholder="Фамилия" id="surname">
-        <input type="text" placeholder="Балл">
+        <input type="number" placeholder="Балл" id="score">
         <button>Add</button>
     </form>
-    <script></script>
+    <p>
+        Общие кол-во студентов:
+        <script>
+            function recount1() {
+                document.write(students.length)
+            }
+            recount1()
+        </script>
+    </p>
+    <p>
+        Общие кол-во сдавших студентов:
+        <script>
+            function recount2() {
+                document.write(students.filter(el => el.at(-1)).length)
+            }
+        </script>
+    </p>
+    <p>Макс. балл: 10</p>
     <table>
         <thead>
             <td>Имя</td>
@@ -25,9 +45,18 @@
         <tbody>
             <script>
                 function onSubmit() {
-                    document.write("<tr>")
-
-                    document.write("</tr>")
+                    let inp1 = document.getElementById('name')
+                    let inp2 = document.getElementById('surname')
+                    let inp3 = document.getElementById('score')
+                    document.write(`<tr><td>${inp1.value}</td><td>${inp2.value}</td><td>${inp3.value}</td><td>${Number(inp3.value) > 5 ? 'зачёт' : 'не зачёт'}</td></tr>`)
+                    students.push([
+                        inp1.value,
+                        inp2.value,
+                        inp3.value,
+                        Number(inp3.value) > 5
+                    ])
+                    recount1()
+                    recount2()
                 }
             </script>
         </tbody>
