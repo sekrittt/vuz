@@ -32,8 +32,6 @@ int *array_sort(int *A, int n)
 {
     int h = round(sqrt((float)n));
     h += (h * h) < n;
-    int h1 = round(n / (float)h);
-    // return;
     int *B = new int[h]; // Мы же можем создать переменную в которой будем сохранять минимум
     int *C = new int[n];
     int *A_indexes = new int[h];
@@ -43,18 +41,16 @@ int *array_sort(int *A, int n)
     {
         for (int i = 0; i < h; i++)
         {
-            *(B + i) = *(A + (h1 * i));
-            *(A_indexes + i) = h1 * i;
+            *(B + i) = *(A + (h * i));
+            *(A_indexes + i) = h * i;
             for (int j = 1; j < h; j++)
             {
-                if (j + h1 * i >= n)
+                if (j + h * i >= n)
+                    break;
+                if (*(A + (j + h * i)) < *(B + i))
                 {
-                    continue;
-                }
-                if (*(A + (j + h1 * i)) < *(B + i))
-                {
-                    *(B + i) = *(A + (j + h1 * i));
-                    *(A_indexes + i) = (j + h1 * i);
+                    *(B + i) = *(A + (j + h * i));
+                    *(A_indexes + i) = (j + h * i);
                 }
             }
         }
