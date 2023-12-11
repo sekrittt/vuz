@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JaVaScRiPt | 2</title>
+</head>
+<body>
+    <form onsubmit="onSubmit2()">
+        <input type="text" id="inp1">
+        <input type="text" id="inp2">
+        <button>Click Me!</button>
+    </form>
+    <script>
+        function onSubmit1() {
+            let inp1 = document.getElementById('inp1')
+            let inp2 = document.getElementById('inp2')
+            inp2.value = inp1.value
+        }
+
+        function onSubmit2() {
+            let inp1 = document.getElementById('inp1')
+            let v = Number(inp1.value)
+            if (Number.isNaN(v)) {
+                alert('Ошибка ввода!')
+                return
+            }
+            alert(`Math.pow(${v}, 4) = ` + Math.pow(v, 4))
+        }
+    </script>
+</body>
+</html>
