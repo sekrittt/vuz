@@ -8,7 +8,7 @@ using namespace std;
 void array_print(int *A, int len) // функция для вывода массива
 {                                 //
     cout << "{";                  //
-    for (int i = 0; i < len; i++) // цикл прохода по массиву с шагом 1 
+    for (int i = 0; i < len; i++) // цикл прохода по массиву с шагом 1
     {                             //
         cout << A[i];             //
         if (i < len - 1)          // условие
@@ -28,6 +28,14 @@ void fill_worst(int *A, int n) // заполнение в худшем
     }                                //
 }
 
+void fill_argv(int *A, int n)           // заполнение случайным образом
+{                               //
+    for (int i = 0; i < n; i++) // проход для заполнения массива
+    {                           //
+        *(A + i) = rand() % 10; // след эл + предыдущий
+    }                           //
+}
+
 int *array_sort(int *A, int n)
 {
     int h = round(sqrt((float)n));
@@ -43,10 +51,8 @@ int *array_sort(int *A, int n)
         {
             *(B + i) = *(A + (h * i));
             *(A_indexes + i) = h * i;
-            for (int j = 1; j < h; j++)
+            for (int j = 1; j < h && j + h * i < n; j++)
             {
-                if (j + h * i >= n)
-                    break;
                 if (*(A + (j + h * i)) < *(B + i))
                 {
                     *(B + i) = *(A + (j + h * i));
@@ -78,7 +84,8 @@ int main()
     cout << "Please enter n: ";
     cin >> n;
     int *A = new int[n];
-    fill_worst(A, n);
+    fill_argv(A, n);
+    // fill_worst(A, n);
     cout << "Array A = ";
     array_print(A, n);
     A = array_sort(A, n);
