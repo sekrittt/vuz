@@ -155,6 +155,7 @@ public:
             F >> *(this->els + this->length-1);
         }
     }
+    
     int length = 0;
 };
 
