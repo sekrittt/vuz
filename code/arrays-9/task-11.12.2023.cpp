@@ -8,7 +8,7 @@ using namespace std;
 void array_print(int *A, int len) // функция для вывода массива
 {                                 //
     cout << "{";                  //
-    for (int i = 0; i < len; i++) // цикл прохода по массиву с шагом 1
+    for (int i = 0; i < len; i++) // цикл прохода по массиву с шагом 1 
     {                             //
         cout << A[i];             //
         if (i < len - 1)          // условие
