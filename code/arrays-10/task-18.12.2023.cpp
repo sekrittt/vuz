@@ -94,11 +94,11 @@ void QSort_counters(int *M, int LG, int PG)
 
     // Если ПРАВЫЙ индекс не достиг ЛЕВОЙ границы массива,то нужно повторить сортировку ЛЕВОЙ части.
     if (LG < j)
-        QSort(M, LG, j);
+        QSort_counters(M, LG, j);
     // Если ЛЕВЫЙ индекс не достиг ПРАВОЙ границы массива,то нужно повторить сортировку ПРАВОЙ части.
     if (i < PG)
-        QSort(M, i, PG);
-} // QSort
+        QSort_counters(M, i, PG);
+} // QSort_counters
 
 void QSort_even(int *M, int LG, int PG)
 {
@@ -137,11 +137,11 @@ void QSort_even(int *M, int LG, int PG)
 
     // Если ПРАВЫЙ индекс не достиг ЛЕВОЙ границы массива,то нужно повторить сортировку ЛЕВОЙ части.
     if (LG < j)
-        QSort(M, LG, j);
+        QSort_even(M, LG, j);
     // Если ЛЕВЫЙ индекс не достиг ПРАВОЙ границы массива,то нужно повторить сортировку ПРАВОЙ части.
     if (i < PG)
-        QSort(M, i, PG);
-} // QSort
+        QSort_even(M, i, PG);
+} // QSort_even
 
 void fill_worst(int *M, int N)       // заполнение в худшем
 {                                    //
