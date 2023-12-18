@@ -1,0 +1,992 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.div
+{
+    justify-content: center;
+    background-color: #181818;
+    display: flex;
+    flex-direction: column;
+}
+
+.div-2
+{
+    background-color: #222;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 42px 18px 18px;
+}
+
+@media (max-width: 991px)
+{
+    .div-2
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+        padding-right: 20px;
+    }
+}
+
+.div-3
+{
+    display: flex;
+    justify-content: space-between;
+    gap: 0px;
+}
+
+.img
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 64px;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.div-4
+{
+    color: #fff;
+    align-self: center;
+    flex-grow: 1;
+    white-space: nowrap;
+    margin: auto 0;
+    font: 300 32px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-4
+    {
+        white-space: initial;
+    }
+}
+
+.div-5
+{
+    align-self: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin: auto 0;
+}
+
+.div-67,
+.div-77
+{
+    color: #fff;
+    font: 400 32px Roboto, sans-serif;
+}
+
+.div-6,
+.div-7
+{
+    color: #bbb;
+    font: 400 32px Roboto, sans-serif;
+    text-decoration: none;
+}
+
+
+.div-8
+{
+    background: linear-gradient(118deg,
+            #222 57.89%,
+            rgba(34, 34, 34, 0) 88.89%);
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 44px 60px;
+}
+
+@media (max-width: 991px)
+{
+    .div-8
+    {
+        max-width: 100%;
+        padding: 0 20px;
+    }
+}
+
+.div-9
+{
+    display: flex;
+    width: 100%;
+    max-width: 1122px;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+@media (max-width: 991px)
+{
+    .div-9
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+.img-2
+{
+    aspect-ratio: 0.47;
+    object-fit: contain;
+    object-position: center;
+    width: 242px;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.div-10
+{
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    margin: auto 0;
+}
+
+@media (max-width: 991px)
+{
+    .div-10
+    {
+        max-width: 100%;
+    }
+}
+
+.div-11
+{
+    align-self: start;
+    display: flex;
+    margin-left: 30px;
+    gap: 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-11
+    {
+        margin-left: 10px;
+    }
+}
+
+.img-3
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 48px;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.div-12
+{
+    color: #fff;
+    align-self: center;
+    flex-grow: 1;
+    white-space: nowrap;
+    margin: auto 0;
+    font: 400 32px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-12
+    {
+        white-space: initial;
+    }
+}
+
+.div-13
+{
+    align-self: stretch;
+    display: flex;
+    margin-top: 49px;
+    align-items: start;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-13
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+        margin-top: 40px;
+    }
+}
+
+.img-4
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    overflow: hidden;
+    margin-top: 11px;
+    max-width: 100%;
+}
+
+.div-14
+{
+    color: #fff;
+    align-self: stretch;
+    flex-grow: 1;
+    flex-basis: auto;
+    font: 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-14
+    {
+        max-width: 100%;
+    }
+}
+
+.div-15
+{
+    align-self: stretch;
+    display: flex;
+    margin-top: 25px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-15
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+.img-5
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    overflow: hidden;
+    max-width: 100%;
+    margin: auto 0;
+}
+
+.div-16
+{
+    color: #fff;
+    align-self: stretch;
+    flex-grow: 1;
+    flex-basis: auto;
+    font: 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-16
+    {
+        max-width: 100%;
+    }
+}
+
+.div-17
+{
+    align-self: stretch;
+    display: flex;
+    margin-top: 26px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-17
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+.img-6
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    overflow: hidden;
+    max-width: 100%;
+    margin: auto 0;
+}
+
+.div-18
+{
+    color: #fff;
+    align-self: stretch;
+    flex-grow: 1;
+    flex-basis: auto;
+    font: 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-18
+    {
+        max-width: 100%;
+    }
+}
+
+.div-19
+{
+    align-self: stretch;
+    display: flex;
+    margin-top: 25px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-19
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+.img-7
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    overflow: hidden;
+    max-width: 100%;
+    margin: auto 0;
+}
+
+.div-20
+{
+    color: #fff;
+    align-self: stretch;
+    flex-grow: 1;
+    flex-basis: auto;
+    font: 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-20
+    {
+        max-width: 100%;
+    }
+}
+
+.div-21
+{
+    align-self: stretch;
+    display: flex;
+    margin-top: 26px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-21
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+.img-8
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    overflow: hidden;
+    max-width: 100%;
+    margin: auto 0;
+}
+
+.div-22
+{
+    color: #777;
+    align-self: stretch;
+    flex-grow: 1;
+    flex-basis: auto;
+    font: italic 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-22
+    {
+        max-width: 100%;
+    }
+}
+
+.div-23
+{
+    border-radius: 15px;
+    background-color: #d8b219;
+    align-self: center;
+    display: flex;
+    margin-top: 50px;
+    gap: 10px;
+    padding: 17px 39px;
+}
+
+@media (max-width: 991px)
+{
+    .div-23
+    {
+        margin-top: 40px;
+        padding: 0 20px;
+    }
+}
+
+.div-24
+{
+    color: #fff;
+    text-align: center;
+    flex-grow: 1;
+    white-space: nowrap;
+    font: 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-24
+    {
+        white-space: initial;
+    }
+}
+
+.img-9
+{
+    aspect-ratio: 1.71;
+    object-fit: contain;
+    object-position: center;
+    width: 24px;
+    overflow: hidden;
+    align-self: center;
+    max-width: 100%;
+    margin: auto 0;
+}
+
+.div-25
+{
+    background: linear-gradient(118deg,
+            #222 57.89%,
+            rgba(34, 34, 34, 0) 88.89%);
+    width: 100%;
+    padding: 48px 80px 48px 38px;
+}
+
+@media (max-width: 991px)
+{
+    .div-25
+    {
+        max-width: 100%;
+        padding: 0 20px;
+    }
+}
+
+.div-26
+{
+    gap: 20px;
+    display: flex;
+}
+
+@media (max-width: 991px)
+{
+    .div-26
+    {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0px;
+    }
+}
+
+.column
+{
+    display: flex;
+    flex-direction: column;
+    line-height: normal;
+    width: 56%;
+    margin-left: 0px;
+}
+
+@media (max-width: 991px)
+{
+    .column
+    {
+        width: 100%;
+    }
+}
+
+.img-10
+{
+    aspect-ratio: 1.41;
+    object-fit: contain;
+    object-position: center;
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: auto 0;
+}
+
+@media (max-width: 991px)
+{
+    .img-10
+    {
+        max-width: 100%;
+        margin-top: 40px;
+    }
+}
+
+.column-2
+{
+    display: flex;
+    flex-direction: column;
+    line-height: normal;
+    width: 44%;
+    margin-left: 20px;
+}
+
+@media (max-width: 991px)
+{
+    .column-2
+    {
+        width: 100%;
+    }
+}
+
+.div-27
+{
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 991px)
+{
+    .div-27
+    {
+        max-width: 100%;
+        margin-top: 40px;
+    }
+}
+
+.div-28
+{
+    color: #777;
+    align-self: start;
+    margin-left: 30px;
+    white-space: nowrap;
+    font: 400 32px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-28
+    {
+        margin-left: 10px;
+        white-space: initial;
+    }
+}
+
+.div-29
+{
+    align-self: stretch;
+    display: flex;
+    margin-top: 55px;
+    align-items: start;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-29
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+        margin-top: 40px;
+    }
+}
+
+.img-11
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    overflow: hidden;
+    margin-top: 11px;
+    max-width: 100%;
+}
+
+.div-30
+{
+    color: #fff;
+    align-self: stretch;
+    flex-grow: 1;
+    flex-basis: auto;
+    font: 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-30
+    {
+        max-width: 100%;
+    }
+}
+
+.div-31
+{
+    align-self: start;
+    display: flex;
+    margin-top: 25px;
+    align-items: center;
+    gap: 15px;
+}
+
+.img-12
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    overflow: hidden;
+    max-width: 100%;
+    margin: auto 0;
+}
+
+.div-32
+{
+    color: #fff;
+    align-self: stretch;
+    width: 100%;
+    font: 300 24px Roboto, sans-serif;
+}
+
+.div-33
+{
+    align-self: stretch;
+    display: flex;
+    margin-top: 26px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-33
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+.img-13
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    overflow: hidden;
+    max-width: 100%;
+    margin: auto 0;
+}
+
+.div-34
+{
+    color: #fff;
+    align-self: stretch;
+    flex-grow: 1;
+    flex-basis: auto;
+    font: 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-34
+    {
+        max-width: 100%;
+    }
+}
+
+.div-35
+{
+    align-self: stretch;
+    display: flex;
+    margin-top: 25px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-35
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+.img-14
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    overflow: hidden;
+    max-width: 100%;
+    margin: auto 0;
+}
+
+.div-36
+{
+    color: #fff;
+    align-self: stretch;
+    flex-grow: 1;
+    white-space: nowrap;
+    font: 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-36
+    {
+        max-width: 100%;
+        white-space: initial;
+    }
+}
+
+.div-37
+{
+    align-self: stretch;
+    display: flex;
+    margin-top: 26px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-37
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+.img-15
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    overflow: hidden;
+    max-width: 100%;
+    margin: auto 0;
+}
+
+.div-38
+{
+    color: #fff;
+    align-self: stretch;
+    flex-grow: 1;
+    flex-basis: auto;
+    font: 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-38
+    {
+        max-width: 100%;
+    }
+}
+
+.div-39
+{
+    align-self: stretch;
+    display: flex;
+    margin-top: 26px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-39
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+.img-16
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    overflow: hidden;
+    max-width: 100%;
+    margin: auto 0;
+}
+
+.div-40
+{
+    color: #fff;
+    align-self: stretch;
+    flex-grow: 1;
+    flex-basis: auto;
+    font: 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-40
+    {
+        max-width: 100%;
+    }
+}
+
+.div-41
+{
+    background-color: #222;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 30px 20px 15px;
+}
+
+@media (max-width: 991px)
+{
+    .div-41
+    {
+        max-width: 100%;
+    }
+}
+
+.div-42
+{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+@media (max-width: 991px)
+{
+    .div-42
+    {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+.div-43
+{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.img-17
+{
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 32px;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.div-44
+{
+    color: #fff;
+    align-self: start;
+    margin-top: 7px;
+    flex-grow: 1;
+    white-space: nowrap;
+    font: 300 24px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-44
+    {
+        white-space: initial;
+    }
+}
+
+.img-18
+{
+    aspect-ratio: 2.47;
+    object-fit: contain;
+    object-position: center;
+    width: 79px;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.div-45
+{
+    color: #777;
+    align-self: start;
+    margin-left: 45px;
+    white-space: nowrap;
+    font: 300 16px Roboto, sans-serif;
+}
+
+@media (max-width: 991px)
+{
+    .div-45
+    {
+        margin-left: 10px;
+        white-space: initial;
+    }
+}
+
+
+.item
+{
+    display: flex;
+    column-gap: 20px;
+    align-items: center;
+}
+
+.item::before
+{
+    content: '';
+    width: 10px;
+    height: 10px;
+    transform: rotate(-45deg);
+    flex-shrink: 0;
+    border-radius: 2px;
+    background: #F3C81B;
+    box-shadow: 0px 0px 5px 0px #F3C81B;
+}
