@@ -17,13 +17,28 @@ void array_print(int *M, int N) // функция для вывода масси
     cout << "}" << endl;        //
 }
 
+void array_print_from_to(int *M, int from, int to)
+{
+    cout << "{";                //
+    for (int i = from; i < to; i++) // цикл прохода по массиву с шагом 1
+    {                           //
+        cout << M[i];           //
+        if (i < to - 1)          // условие
+            cout << ", ";       //
+    }                           //
+    cout << "}" << endl;        //
+}
+
 void QSort(int *M, int LG, int PG)
 {
     int i = LG, j = PG;
     // Находим разделительный элемент в середине массива
     double X = *(M + ((LG + PG) / 2));
 
-    cout << "X = " << X << ", X index: " << ((LG + PG) / 2) << endl;
+    cout << "   Array fragment: ";
+    array_print_from_to(M, LG, PG+1);
+    cout << "   X = " << X << endl;
+
 
     // Обход массив
     while (i <= j)
@@ -60,8 +75,9 @@ void QSort_counters(int *M, int LG, int PG)
     // Находим разделительный элемент в середине массива
     double X = *(M + ((LG + PG) / 2));
 
-    cout << "X = " << X << ", X index: " << ((LG + PG) / 2) << endl;
-
+    cout << "   Array fragment: ";
+    array_print_from_to(M, LG, PG+1);
+    cout << "   X = " << X << endl;
     // Обход массив
     while (i <= j)
     {
@@ -108,8 +124,9 @@ void QSort_even(int *M, int LG, int PG)
     // Находим разделительный элемент в середине массива
     double X = *(M + (((LG + PG) / 2) + ((LG + PG) / 2) % 2));
 
-    cout << "X = " << X << ", X index: " << (((LG + PG) / 2) + ((LG + PG) / 2) % 2) << endl;
-
+    cout << "   Array fragment: ";
+    array_print_from_to(M, LG, PG+1);
+    cout << "   X = " << X << endl;
     // Обход массив
     while (i <= j)
     {
@@ -174,7 +191,7 @@ void fill_argv(int *M, int N)    // заполнение случайным об
 int main()
 {
     srand(time(0));
-    int N = 9;
+    int N = 11;
     int *M = new int[N];
     cout << "QSort: "<<endl;
     cout << "Fill Worst: " << endl;
@@ -222,7 +239,7 @@ int main()
     fill_worst(M, N);
     cout << "Array: ";
     array_print(M, N);
-    QSort(M, 0, N - 1);
+    QSort_counters(M, 0, N - 1);
     cout << "Sorted Array: ";
     array_print(M, N);
     cout << "SR = " << SR << ", OB = " << OB << endl;
@@ -232,7 +249,7 @@ int main()
     fill_argv(M, N);
     cout << "Array: ";
     array_print(M, N);
-    QSort(M, 0, N - 1);
+    QSort_counters(M, 0, N - 1);
     cout << "Sorted Array: ";
     array_print(M, N);
     cout << "SR = " << SR << ", OB = " << OB << endl;
