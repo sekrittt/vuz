@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="header"><img src="images/logo.webp" alt="Логотип сайта" id="logo" onclick="location.href = 'index.html'">
+        <div class="links">
+            <a href="index.html">Главная</a>
+            <a href="about.html">О нас</a>
+            <a href="services.html">Услуги</a>
+        </div>
+    </div>
+    <div id="content">
+        <h1>F? J rjv j yfc nj& (А, о ком о нас то?)</h1>
+        <div style="font-size: 36px; margin-bottom: 30px;">
+            А ну я, Дмитрий Жабо, сделай этот сайт, да, тут даже что-то есть, наверное...
+        </div>
+        <div style="margin-bottom: 20px;">
+            <p>
+                Nen nbgf ntu p jn vjtq ibps cj ihbanfvb b hfpvthjv ntrcnf 40px (Тут типа тег p от моей шизы со шрифтами и размером текста 40px)
+            </p>
+        </div>
+        <form onsubmit="onSubmit()">
+            <input type="text" id="some_text_input" style="font-size: 28px;">
+            <select name="" id="some_select" style="font-size: 28px;">
+                <option value="три">Раз</option>
+                <option value="раз">Два</option>
+                <option value="два">Три</option>
+            </select>
+            <div>
+                <input type="checkbox" name="some_checkbox" id="some_checkbox" style="font-size: 28px;">
+                <label for="some_checkbox" style="font-size: 28px;">Какой-то чекбокс</label>
+            </div>
+            <button style="font-size: 28px;">Кнопощхе, нажми меня....</button>
+        </form>
+    </div>
+    <div id="footer">
+        &copy; 2023 Собсна Шиза. Все права защищены.
+    </div>
+    <script>
+        function onSubmit() {
+            let inp = document.getElementById('some_text_input').value
+            let checked = document.getElementById('some_checkbox').checked
+            let selected = document.getElementById('some_select').value
+            alert(`Ну и что это значит? Э${inp}; ${checked ? 'ДА' : 'Нет'}; ${selected}Э`)
+        }
+    </script>
+</body>
+
+</html>

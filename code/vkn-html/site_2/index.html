@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="header"><img src="images/logo.webp" alt="Логотип сайта" id="logo" onclick="location.href = 'index.html'">
+        <div class="links">
+            <a href="index.html">Главная</a>
+            <a href="about.html">О нас</a>
+            <a href="services.html">Услуги</a>
+        </div>
+    </div>
+    <div id="content">
+        <h1>Оу, это главная страница</h1>
+        <div style="display: flex;column-gap: 30px; margin-top: 10px;">
+            <img src="images/MeGQy2dlsns.jpg" alt="May be censored" height="480" class="animated" tabindex="-1" title='Click?'>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maxime a accusamus, pariatur, reiciendis
+                accusantium ad id
+                tempore esse magnam dignissimos ducimus dolores vel soluta! Rem culpa, corporis incidunt error
+                dignissimos doloribus
+                corrupti reiciendis numquam suscipit fugiat, dolore ducimus accusamus, nam vel. Porro odit qui
+                molestias, provident
+                atque expedita consequuntur ratione architecto illo ex. Sint nam eligendi facilis ratione nulla quidem
+                magnam
+                assumenda ea dignissimos illo, eveniet distinctio cupiditate, perferendis ullam omnis incidunt dolorem,
+                repudiandae
+                sapiente sunt. Mollitia tempora expedita assumenda doloremque minus sint et veritatis iste? A ex eveniet
+                harum,
+                quisquam, ducimus hic exercitationem corrupti omnis illum nulla fugiat itaque aut nobis! Commodi est
+                magni ea,
+                dolorum iusto culpa perspiciatis exercitationem repellendus, quidem dicta iure hic. Dignissimos dicta
+                qui molestias
+                consequatur ab, illo aspernatur temporibus facilis distinctio quia voluptate laboriosam adipisci laborum
+                suscipit
+                natus placeat inventore omnis repudiandae! Magni quasi adipisci debitis harum est cum natus dolores esse
+                unde
+                asperiores!</p>
+        </div>
+    </div>
+    <div id="footer">
+        &copy; 2023 Собсна Шиза. Все права защищены.
+    </div>
+    <script>
+        let key = '';
+        document.onkeyup = (e) => {
+            if (e.key == 'L') {
+                key = ''
+                return;
+            }
+            key += e.key
+            if (key == 'q1w2e3r4t5y6') {
+                location.href = 'game.html'
+            }
+        }
+    </script>
+</body>
+
+</html>
