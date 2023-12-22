@@ -112,10 +112,10 @@ body:has(.animated:focus) {
 }
 
 @keyframes base_animation {
-    0% {
+    0%, 100% {
         transform: rotateZ(1deg);
     }
-    100%
+    50%
     {
         transform: rotateZ(-1deg);
     }
