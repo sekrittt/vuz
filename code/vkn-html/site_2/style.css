@@ -69,6 +69,10 @@ body
     text-align: center;
 }
 
+.animated {
+    animation: base_animation 2s infinite linear;
+}
+
 .animated:focus
 {
     animation: some_animation 0.1s infinite linear;
@@ -104,6 +108,16 @@ body:has(.animated:focus) {
     100%
     {
         background-color: rgb(255, 255, 255);
+    }
+}
+
+@keyframes base_animation {
+    0% {
+        transform: rotateZ(1deg);
+    }
+    100%
+    {
+        transform: rotateZ(-1deg);
     }
 }
 
