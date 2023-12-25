@@ -46,7 +46,7 @@ void fill_argv(int *A, int N)        // заполнение случайным 
 
 void sort(int *A, int *B, int k, int N)
 {
-    int *C = new int[k];
+    int *C = new int[k+1];
     for (int i = 0; i < k; i++)
     {
         C[i] = 0;
@@ -57,11 +57,14 @@ void sort(int *A, int *B, int k, int N)
     for (int i = 1; i < k; i++){
         C[i] = C[i] + C[i - 1];
     }
-    for (int j = N; j >= 0; j--)
+    for (int j = N-1; j >= 0; j--)
     {
         B[C[A[j]]] = A[j];
         C[A[j]] = C[A[j]] - 1;
     }
+    //
+    for (int i = 0; i < N; i++)
+        A[i] = B[i];
 }
 int array_max(int *A, int N)
 {
@@ -83,7 +86,7 @@ int main()
     cin >> N;
     int *A = new int[N];
     int *B = new int[N];
-    fill_worst(A, N);
+    fill_argv(A, N);
     k = array_max(A, N);
     cout << "Array: ";
     array_print(A, N);

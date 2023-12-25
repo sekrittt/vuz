@@ -71,9 +71,11 @@ void sort_1(int *A, int N)
     {
         C[A[i]] = C[A[i]] + 1;
     };
+    cout << "Array C: ";
+    array_print(C, Max);
     //-------------------------------------
     int pos = 0;
-    for (int i = 0; i <= N; i++) // «перезапись» массива А
+    for (int i = 0; i <= Max; i++) // «перезапись» массива А
     {
         for (int j = 1; j <= C[i]; j++)
         {
@@ -99,9 +101,11 @@ void sort_2(int *A, int N)
     {
         C[A[i]] = C[A[i]] + 1;
     };
+    cout << "Array C: ";
+    array_print(C, Max);
     //-------------------------------------
     int pos = N - 1;
-    for (int i = 0; i <= N; i++) // «перезапись» массива А
+    for (int i = 0; i <= Max; i++) // «перезапись» массива А
     {
         for (int j = 1; j <= C[i] && pos >= 0; j++)
         {
@@ -133,7 +137,7 @@ int main()
     } else
     {
         cout << "Sort UP: " << endl;
-        fill_worst(A, N);
+        fill_argv(A, N);
         cout << "Array: ";
         array_print(A, N);
         sort_1(A, N);
