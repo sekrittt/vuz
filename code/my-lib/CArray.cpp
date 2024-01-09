@@ -2,9 +2,9 @@
 #include <string>
 #include <fstream>
 
+#include "Sort.h"
+
 using namespace std;
-
-
 
 template <typename T>
 class CArray
@@ -47,6 +47,15 @@ public:
 
 	T pop(int index)
 	{
+		if (index >= this->length)
+		{
+			return;
+		}
+		if (index < 0)
+		{
+			return;
+		}
+
 		T el = *(this->els + index);
 		for (; index < this->length - 1; index++)
 		{
@@ -55,6 +64,26 @@ public:
 		this->length--;
 		this->els = (T *)realloc(this->els, this->length * this->type_size);
 		return el;
+	}
+
+	void insert(int index, T el)
+	{
+		if (index >= this->length)
+		{
+			return;
+		}
+		if (index < 0)
+		{
+			return;
+		}
+
+		this->length++;
+		this->els = (T *)realloc(this->els, this->length * this->type_size);
+		for (int i = this->length - 2; index < i; i--)
+		{
+			*(this->els + i + 1) = *(this->els + i);
+		}
+		*(this->els + index) = el;
 	}
 
 	bool includes(T el)
@@ -71,7 +100,7 @@ public:
 
 	void reverse()
 	{
-		T tmp = 0;
+		T tmp;
 		for (int i = 0; i < this->length / 2; i++)
 		{
 			tmp = *(this->els + i);
@@ -108,7 +137,7 @@ public:
 		return -1;
 	}
 
-	T get(int index)
+	T get(int index = 0)
 	{
 		return *(this->els + index);
 	}
@@ -118,51 +147,30 @@ public:
 		*(this->els + index) = value;
 	}
 
+	// Need?
+	void update_length(int new_length)
+	{
+		this->length = new_length;
+		this->els = (T *)realloc(this->els, this->length * this->type_size);
+	}
+
 	friend ostream &operator<<(ostream &os, CArray<T> &arr)
 	{
 		os << "Array [" << arr.length << "] {";
 		for (int i = 0; i < arr.length; i++)
 		{
-			os << arr.get(i);
+			os << arr[i];
 			if (i < arr.length - 1)
 				os << ", ";
 		}
-		os << "}" << endl;
+		os << "}";
 		return os;
 	};
 
-	int &operator[](int index)
+	T &operator[](int index)
 	{
-		return this->els[index];
+		return *(this->els + index);
 	}
 
 	int length = 0;
 };
-
-class Sort
-{
-private:
-	/* data */
-public:
-	Sort(/* args */) {};
-	~Sort() {};
-
-	template <typename T>
-	static CArray<T> sort(CArray<T> arr) {
-
-	}
-};
-
-
-int main()
-{
-	// int *M = Array::read_from_file<int>("arrays-6/file1.txt");
-	// Array::print(M);
-	CArray<int> *M = new CArray<int>();
-	M->push(12);
-	M->push(44);
-	cout << *M;
-	M->pop(0);
-	cout << *M;
-	return 0;
-}
