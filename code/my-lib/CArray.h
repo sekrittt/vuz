@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -12,11 +13,10 @@ class CArray
 {
 private:
     T *els;
-    int type_size;
+    int type_size = sizeof(T);
 
 public:
     CArray();
-
     CArray(int);
 
     void read_from_file(string);
@@ -56,10 +56,12 @@ public:
         return os;
     };
 
+    T &operator[](int index)
+    {
+        return *(this->els + index);
+    };
 
-    T &operator[](int);
-
-    int length;
+    int length = 0;
 };
-
+#include "CArray.tpp"
 #endif /* CARRAY_H */

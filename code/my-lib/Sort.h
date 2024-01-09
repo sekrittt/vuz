@@ -2,6 +2,7 @@
 #ifndef SORT_H
 #define SORT_H
 
+#include <cmath>
 #include <climits>
 
 #include "CArray.h"
@@ -13,25 +14,50 @@ class Sort
 {
 public:
     template <typename T>
-    static CArray<T> &sort_bubble(CArray<T> &, bool (*)(T, T) = base_compare);
+    static CArray<T> &sort_bubble(CArray<T> &, bool (*)(T, T));
 
     template <typename T>
-    static CArray<T> &sort_select(CArray<T> &arr, bool (*)(T, T) = base_compare);
+    static CArray<T> &sort_select(CArray<T> &, bool (*)(T, T));
 
     template <typename T>
-    static CArray<T> &sort_insert(CArray<T> &, bool (*)(T, T) = base_compare);
+    static CArray<T> &sort_insert(CArray<T> &, bool (*)(T, T));
 
     template <typename T>
-    static CArray<T> &sort_shell(CArray<T> &, bool (*)(T, T) = base_compare);
+    static CArray<T> &sort_shell(CArray<T> &, bool (*)(T, T));
 
     template <typename T>
-    static CArray<T> &sort_square(CArray<T> &, bool (*)(T, T) = base_compare, T = INT_MAX);
+    static CArray<T> &sort_square(CArray<T> &, bool (*)(T, T), T);
 
     template <typename T>
-    static CArray<T> &sort_advanced_bubble(CArray<T> &, bool (*)(T, T) = base_compare);
+    static CArray<T> &sort_advanced_bubble(CArray<T> &, bool (*)(T, T));
 
     template <typename T>
-    static CArray<T> &quick_sort(CArray<T> &, bool (*)(T, T) = base_compare, int = 0, int  = -1);
+    static CArray<T> &quick_sort(CArray<T> &, bool (*)(T, T), int, int);
+
+    template <typename T>
+    static CArray<T> &sort_bubble(CArray<T> &);
+
+    template <typename T>
+    static CArray<T> &sort_select(CArray<T> &);
+
+    template <typename T>
+    static CArray<T> &sort_insert(CArray<T> &);
+
+    template <typename T>
+    static CArray<T> &sort_shell(CArray<T> &);
+
+    template <typename T>
+    static CArray<T> &sort_square(CArray<T> &, bool (*)(T, T));
+    template <typename T>
+    static CArray<T> &sort_square(CArray<T> &);
+
+    template <typename T>
+    static CArray<T> &sort_advanced_bubble(CArray<T> &);
+
+    template <typename T>
+    static CArray<T> &quick_sort(CArray<T> &, bool (*)(T, T));
+    template <typename T>
+    static CArray<T> &quick_sort(CArray<T> &);
 };
-
+#include "Sort.tpp"
 #endif /* SORT_H */
