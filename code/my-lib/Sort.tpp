@@ -1,5 +1,8 @@
-#include "CArray.h"
-#include "Sort.h"
+#include "Sort.hpp"
+#include "CArray.hpp"
+
+#include <cmath>
+#include <climits>
 
 template <typename T>
 bool base_compare(T a, T b)
@@ -96,8 +99,8 @@ CArray<T> &Sort::sort_square(CArray<T> &arr, bool (*compare)(T, T), T fictitious
     int h = sqrt(arr.length);
     int h1 = round(sqrt((float)arr.length));
     h1 += (h1 * h1) < arr.length;
-    CArray<T> *B = new CArray<T>(arr.length);
-    CArray<T> *C = new CArray<T>(arr.length);
+    CArray<T> B{arr.length};
+    CArray<T> C{arr.length};
     int *A_indexes = new int[h];
     int B_index = -1;
 
@@ -105,30 +108,30 @@ CArray<T> &Sort::sort_square(CArray<T> &arr, bool (*compare)(T, T), T fictitious
     {
         for (int i = 0; i < h; i++)
         {
-            B->set(i, arr[h1 * i]);
+            B[i] = arr[h1 * i];
             *(A_indexes + i) = h1 * i;
             for (int j = 1; j < h1 && j + h1 * i < arr.length; j++)
             {
-                if (compare(B->get(i), arr[j + h1 * i]))
+                if (compare(B[i], arr[j + h1 * i]))
                 {
-                    B->set(i, arr[j + h1 * i]);
+                    B[i] = arr[j + h1 * i];
                     *(A_indexes + i) = (j + h1 * i);
                 }
             }
         }
-        C->set(k, B->get());
+        C[k] = B[0];
         B_index = 0;
         for (int i = 1; i < h; i++)
         {
-            if (compare(C->get(k), B->get(i)))
+            if (compare(C[k], B[i]))
             {
-                C->set(k, B->get(i));
+                C[k] = B[i];
                 B_index = i;
             }
         }
 
         arr[*(A_indexes + B_index)] = fictitious;
-        B->set(B_index, fictitious);
+        B[B_index] = fictitious;
     }
     return *C;
 }
@@ -288,8 +291,8 @@ CArray<T> &Sort::sort_square(CArray<T> &arr, bool (*compare)(T, T))
     int h = sqrt(arr.length);
     int h1 = round(sqrt((float)arr.length));
     h1 += (h1 * h1) < arr.length;
-    CArray<T> *B = new CArray<T>(arr.length);
-    CArray<T> *C = new CArray<T>(arr.length);
+    CArray<T> B{arr.length};
+    CArray<T> C{arr.length};
     int *A_indexes = new int[h];
     int B_index = -1;
 
@@ -297,30 +300,30 @@ CArray<T> &Sort::sort_square(CArray<T> &arr, bool (*compare)(T, T))
     {
         for (int i = 0; i < h; i++)
         {
-            B->set(i, arr[h1 * i]);
+            B[i] = arr[h1 * i];
             *(A_indexes + i) = h1 * i;
             for (int j = 1; j < h1 && j + h1 * i < arr.length; j++)
             {
-                if (compare(B->get(i), arr[j + h1 * i]))
+                if (compare(B[i], arr[j + h1 * i]))
                 {
-                    B->set(i, arr[j + h1 * i]);
+                    B[i] = arr[j + h1 * i];
                     *(A_indexes + i) = (j + h1 * i);
                 }
             }
         }
-        C->set(k, B->get());
+        C[k] = B[0];
         B_index = 0;
         for (int i = 1; i < h; i++)
         {
-            if (compare(C->get(k), B->get(i)))
+            if (compare(C[k], B[i]))
             {
-                C->set(k, B->get(i));
+                C[k] = B[i];
                 B_index = i;
             }
         }
 
         arr[*(A_indexes + B_index)] = INT_MAX;
-        B->set(B_index, INT_MAX);
+        B[B_index] = INT_MAX;
     }
     return *C;
 }
@@ -331,8 +334,8 @@ CArray<T> &Sort::sort_square(CArray<T> &arr)
     int h = sqrt(arr.length);
     int h1 = round(sqrt((float)arr.length));
     h1 += (h1 * h1) < arr.length;
-    CArray<T> *B = new CArray<T>(arr.length);
-    CArray<T> *C = new CArray<T>(arr.length);
+    CArray<T> B{arr.length};
+    CArray<T> C{arr.length};
     int *A_indexes = new int[h];
     int B_index = -1;
 
@@ -340,30 +343,30 @@ CArray<T> &Sort::sort_square(CArray<T> &arr)
     {
         for (int i = 0; i < h; i++)
         {
-            B->set(i, arr[h1 * i]);
+            B[i] = arr[h1 * i];
             *(A_indexes + i) = h1 * i;
             for (int j = 1; j < h1 && j + h1 * i < arr.length; j++)
             {
-                if (base_compare(B->get(i), arr[j + h1 * i]))
+                if (base_compare(B[i], arr[j + h1 * i]))
                 {
-                    B->set(i, arr[j + h1 * i]);
+                    B[i] = arr[j + h1 * i];
                     *(A_indexes + i) = (j + h1 * i);
                 }
             }
         }
-        C->set(k, B->get());
+        C[k] = B[0];
         B_index = 0;
         for (int i = 1; i < h; i++)
         {
-            if (base_compare(C->get(k), B->get(i)))
+            if (base_compare(C[k], B[i]))
             {
-                C->set(k, B->get(i));
+                C[k] = B[i];
                 B_index = i;
             }
         }
 
         arr[*(A_indexes + B_index)] = INT_MAX;
-        B->set(B_index, INT_MAX);
+        B[B_index] = INT_MAX;
     }
     return *C;
 }
@@ -373,7 +376,7 @@ CArray<T> &Sort::sort_advanced_bubble(CArray<T> &arr)
 {
     int left = 0;
     int right = arr.length - 1;
-    int j, k = arr.length;
+    int j = 0, k = arr.length;
     T t;
     do
     {

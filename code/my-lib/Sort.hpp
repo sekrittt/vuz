@@ -1,11 +1,7 @@
-#pragma once
+#include "CArray.hpp"
+
 #ifndef SORT_H
 #define SORT_H
-
-#include <cmath>
-#include <climits>
-
-#include "CArray.h"
 
 template <typename T>
 bool base_compare(T a, T b);

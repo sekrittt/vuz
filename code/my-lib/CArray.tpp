@@ -1,5 +1,8 @@
-#include "Sort.h"
-#include "CArray.h"
+#include <iostream>
+#include <fstream>
+
+#include "Sort.hpp"
+#include "CArray.hpp"
 
 using namespace std;
 
@@ -9,7 +12,6 @@ CArray<T>::CArray()
 	this->els = (T *)malloc(0 * this->type_size);
 	this->length = 0;
 };
-
 template <typename T>
 CArray<T>::CArray(int length)
 {
@@ -148,4 +150,29 @@ void CArray<T>::update_length(int new_length)
 {
 	this->length = new_length;
 	this->els = (T *)realloc(this->els, this->length * this->type_size);
+}
+template <typename T>
+template <typename J>
+CArray<J> CArray<T>::map(J (*callback)(T element, int index, CArray<T> &array))
+{
+	CArray<J> new_arr;
+	for (int i = 0; i < this->length; i++)
+	{
+		new_arr.push(callback(*(this->els + i), i, *this));
+	}
+	return new_arr;
+}
+template <typename T>
+CArray<T> CArray<T>::filter(bool (*callback)(T element, int index, CArray<T> &array))
+{
+	CArray<T> new_arr;
+	for (int i = 0; i < this->length; i++)
+	{
+		bool result = callback(*(this->els + i), i, *this);
+		if (result)
+		{
+			new_arr.push(*(this->els + i));
+		}
+	}
+	return new_arr;
 }

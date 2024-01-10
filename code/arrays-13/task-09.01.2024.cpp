@@ -12,13 +12,13 @@ void sort(const char *f1, const char *f2, const char *f3)
     int k = 1, N = 0, a, k1, k2;
     do
     {
-        F.open(f1, ios::in | ios::out);
+        F.open(f1, ios::in);
         F1.open(f2, ios::out | ios::trunc);
         F2.open(f3, ios::out | ios::trunc);
         F1.close();
         F2.close();
-        F1.open(f2, ios::in | ios::out);
-        F2.open(f3, ios::in | ios::out);
+        F1.open(f2, ios::out);
+        F2.open(f3, ios::out);
         N = 0;
         if (F.eof())
         {
@@ -45,13 +45,12 @@ void sort(const char *f1, const char *f2, const char *f3)
             }
         }
 
-        cout << N << endl;
         F1.close();
         F2.close();
         F.close();
-        F.open(f1, ios::in | ios::out);
-        F1.open(f2, ios::in | ios::out);
-        F2.open(f3, ios::in | ios::out);
+        F.open(f1, ios::out);
+        F1.open(f2, ios::in);
+        F2.open(f3, ios::in);
         int a1, a2;
         F1 >> a1;
         F2 >> a2;
@@ -104,7 +103,7 @@ void sort(const char *f1, const char *f2, const char *f3)
             F << a2;
             F2 >> a2;
         }
-        k += 2;
+        k *= 2;
         F1.close();
         F2.close();
         F.close();

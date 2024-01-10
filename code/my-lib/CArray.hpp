@@ -1,10 +1,9 @@
-#pragma once
-#ifndef CARRAY_H
-#define CARRAY_H
-
 #include <iostream>
 #include <string>
 #include <fstream>
+
+#ifndef CARRAY_H
+#define CARRAY_H
 
 using namespace std;
 
@@ -39,6 +38,11 @@ public:
     T get();
 
     void set(int, T);
+
+    template <typename J>
+    CArray<J> map(J (*)(T, int, CArray<T> &));
+
+    CArray<T> filter(bool (*)(T, int, CArray<T> &));
 
     // Need?
     void update_length(int);
