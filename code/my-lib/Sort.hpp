@@ -55,5 +55,5 @@ public:
     template <typename T>
     static CArray<T> &quick_sort(CArray<T> &);
 };
-#include "Sort.tpp"
+#include "Sort.cpp"
 #endif /* SORT_H */

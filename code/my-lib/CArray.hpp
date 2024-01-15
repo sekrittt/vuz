@@ -67,5 +67,5 @@ public:
 
     int length = 0;
 };
-#include "CArray.tpp"
+#include "CArray.cpp"
 #endif /* CARRAY_H */
