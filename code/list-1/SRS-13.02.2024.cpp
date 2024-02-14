@@ -10,14 +10,14 @@ struct Node
 
 int main()
 {
-    Node *head = new (Node);
+    Node *one = new (Node);
 
     int len;
     cout << "Please enter enter length of list: ";
     cin >> len;
     cout << "Please enter value of 1 element: ";
-    cin >> (*head).D;
-    Node *prev = head;
+    cin >> (*one).D;
+    Node *prev = one;
     for (int i = 1; i < len; i++)
     {
         Node *t = new (Node);
@@ -26,7 +26,7 @@ int main()
         (*prev).Next = t;
         prev = t;
         // Print elements
-        Node *el = head;
+        Node *el = one;
         while (el != NULL)
         {
             cout << "Address of " << (*el).D << " = " << el << " Next element address = " << (*el).Next << endl;
@@ -34,8 +34,8 @@ int main()
         }
     }
 
-    Node *el = head;
-    Node *max_el = head;
+    Node *el = one;
+    Node *max_el = one;
     while (el != NULL)
     {
         // cout << "Address of " << (*el).D << " = " << el << " Next element address = " << (*el).Next << endl;
