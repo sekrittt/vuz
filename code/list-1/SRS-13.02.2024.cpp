@@ -35,37 +35,18 @@ int main()
     }
 
     Node *el = head;
+    Node *max_el = head;
     while (el != NULL)
     {
-        cout << "Address of " << (*el).D << " = " << el << " Next element address = " << (*el).Next << endl;
+        // cout << "Address of " << (*el).D << " = " << el << " Next element address = " << (*el).Next << endl;
+        if ((*max_el).D < (*el).D)
+        {
+            max_el = el;
+        }
         el = (*el).Next;
     }
 
-    // Average
-    int avrg = 0;
-    el = head;
-    while (el != NULL)
-    {
-        avrg += (*el).D;
-        el = (*el).Next;
-    }
-    cout << "Average: " << avrg << endl;
+    cout << "Max element: " << (*max_el).D << endl;
 
-    // Remove 2 first elements
-    if (len > 2)
-    {
-        Node *target_el = head;
-        for (int i = 0; i < 2; i++)
-        {
-            target_el = (*target_el).Next;
-        }
-        head = target_el;
-        Node *el = head;
-        while (el != NULL)
-        {
-            cout << "Address of " << (*el).D << " = " << el << " Next element address = " << (*el).Next << endl;
-            el = (*el).Next;
-        }
-    }
     return 0;
 }
