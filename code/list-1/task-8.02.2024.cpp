@@ -63,12 +63,12 @@ int main()
     // Remove 2 first elements
     if (len > 2)
     {
-        Node *target_el = one; // Устанавливается адрес указателя target_el на адрес начала списка (one)
         for (int i = 0; i < 2; i++)
         {
-            target_el = (*target_el).Next; // Устанавливается адрес указателя target_el на адрес следующего элемента
+            Node *temp = one;  // Создаём временную переменную для хранения ссылки на начало списка
+            one = (*one).Next; // Устанавливаем в переменную one адрес на следующий элемент
+            free(temp);        // Освобождаем память
         }
-        one = target_el; // Устанавливается адрес начала спика (one) на адрес указателя target_el
         // Print elements
         cout << "List after delete 2 first elements: " << endl;
         Node *el = one;
