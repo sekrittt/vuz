@@ -12,8 +12,8 @@ struct Node
 
 void list_print(Node *head)
 {
-    Node *cur = head;
-    cout << "Head: " << (*head).surname << " length: " << (*head).length << " index insert: " << (*head).index << endl;
+    Node *cur = (*head).next;
+    cout << "Head length: " << (*head).length << " index insert: " << (*head).index << endl;
     cout << "List [" << (*head).length << "] { ";
     while (cur != NULL)
     {
@@ -29,8 +29,8 @@ void list_print(Node *head)
 
 void clist_print(Node *head)
 {
-    Node *cur = head;
-    cout << "Head: " << (*head).surname << " length: " << (*head).length << " index insert: " << (*head).index << endl;
+    Node *cur = (*head).next;
+    cout << "Head length: " << (*head).length << " index insert: " << (*head).index << endl;
     cout << "Cycle List [" << (*head).length << "] { ";
     do
     {
@@ -40,14 +40,14 @@ void clist_print(Node *head)
             cout << ", ";
         }
         cur = (*cur).next;
-    } while (cur != head);
+    } while (cur != (*head).next);
     cout << " }" << endl;
 }
 
 void clist_print_even(Node *head)
 {
-    Node *cur = head;
-    cout << "Head: " << (*head).surname << " length: " << (*head).length << " index insert: " << (*head).index << endl;
+    Node *cur = (*head).next;
+    cout << "Head length: " << (*head).length << " index insert: " << (*head).index << endl;
     cout << "Cycle List Even [" << (int)((*head).length / 2) + 1 << "] { ";
     int c = 0;
     do
@@ -55,27 +55,27 @@ void clist_print_even(Node *head)
         if (c % 2 == 0)
         {
             cout << (*cur).surname;
-            if ((*cur).next != head)
+            if ((*cur).next != (*head).next)
             {
                 cout << ", ";
             }
         }
         cur = (*cur).next;
         c++;
-    } while (cur != head);
+    } while (cur != (*head).next);
     cout << " }" << endl;
 }
 
 void clist_print_double(Node *head)
 {
-    Node *cur = head;
-    cout << "Head: " << (*head).surname << " length: " << (*head).length << " index insert: " << (*head).index << endl;
+    Node *cur = (*head).next;
+    cout << "Head length: " << (*head).length << " index insert: " << (*head).index << endl;
     cout << "Cycle List Double [" << (*head).length * 2 << "] { ";
     int c = 0;
     do
     {
         cout << (*cur).surname;
-        if ((*cur).next != head)
+        if ((*cur).next != (*head).next)
         {
             cout << ", ";
         }
@@ -86,7 +86,7 @@ void clist_print_double(Node *head)
             cur = (*cur).next;
         }
         cur = (*cur).next;
-    } while (cur != head);
+    } while (cur != (*head).next);
     cout << " }" << endl;
 }
 
@@ -96,11 +96,8 @@ int main()
     int l;
     cout << "Please enter list length: ";
     cin >> l;
-    cout << "Please enter surname: ";
-    cin >> head.surname;
-    list_print(&head);
     Node *prev = &head;
-    for (int i = 1; i < l; i++)
+    for (int i = 0; i < l; i++)
     {
         head.length = i + 1;
         head.index = i;
@@ -117,7 +114,7 @@ int main()
     {
         last_element = (*last_element).next;
     }
-    (*last_element).next = &head;
+    (*last_element).next = head.next;
 
     clist_print(&head);
 

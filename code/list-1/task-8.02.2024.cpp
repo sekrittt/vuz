@@ -67,7 +67,7 @@ int main()
         {
             Node *temp = one;  // Создаём временную переменную для хранения ссылки на начало списка
             one = (*one).Next; // Устанавливаем в переменную one адрес на следующий элемент
-            free(temp);        // Освобождаем память
+            delete temp;       // Освобождаем память
         }
         // Print elements
         cout << "List after delete 2 first elements: " << endl;

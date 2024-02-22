@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class Event : public Bundle
+class Event : virtual public Bundle
 {
 public:
     Event(string t) : Bundle()

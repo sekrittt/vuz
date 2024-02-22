@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class NetEvent : public Event
+class NetEvent : virtual public Event
 {
 public:
     NetEvent(string t, string _message) : Event(t)
@@ -25,7 +25,7 @@ int main()
     EventHandler<NetEvent> EH1 = {"net-open", onNetOpen};
     NetEvent netEvent = {"net-open", "Connection success"};
     Event e = {"test"};
-    EventTarget<NetEvent> ET = {};
+    EventTarget<NetEvent> ET;
 
     EventHandlerRegistered EHR_onNetOpen1 = ET.on(EH1);
 
