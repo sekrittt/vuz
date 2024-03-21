@@ -10,8 +10,9 @@ int main()
     cout << "Please enter N: ";
     cin >> N;
     for (int i = 0; i < N; i++)
-        i % 2 ? numbers.push_back(rand() % 100) : numbers.push_front(rand() % 100);
+        i % 2 ? numbers.push_back(rand() % 100) : numbers.push_front(rand() % 100); // choose variant pushing
 
+    // Print list
     cout << "List [" << numbers.size() << "] { ";
     for (int n : numbers)
         cout << n << " ";
@@ -21,23 +22,25 @@ int main()
     cout << "Please enter value which will be deleted: ";
     cin >> k;
 
-    numbers.remove(k);
+    numbers.remove(k); // removing element by value
 
+    // Print list
     cout << "List [" << numbers.size() << "] { ";
     for (int n : numbers)
         cout << n << " ";
     cout << "}" << endl;
 
-    cout << "List is empty? " << (numbers.empty() ? "Yes" : "No") << endl;
+    cout << "List is empty? " << (numbers.empty() ? "Yes" : "No") << endl; // check list is empty or not
 
     int v, p;
     cout << "Please enter value and position: ";
     cin >> v >> p;
     auto pos = numbers.cbegin();
-    for (int i = 0; i < p; i++, pos++)
+    for (int i = 0; i < p; i++, pos++) // move pointer
         ;
-    numbers.emplace(pos, v);
+    numbers.insert(pos, v);
 
+    // Print list
     cout << "List [" << numbers.size() << "] { ";
     for (int n : numbers)
         cout << n << " ";
