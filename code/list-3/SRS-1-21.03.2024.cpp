@@ -1,35 +1,36 @@
 #include <iostream>
 #include <queue>
 #include <stack>
-#include <locale>
+
 using namespace std;
 
 int main()
 {
+    char example[] = "Hello, world!";
     queue<char> Q;
-    cout << "Очередь пуста?";
+
+    cout << "Queue is empty? ";
     if (Q.empty())
-        cout << "Да " << Q.empty() << endl;
+        cout << "Yes" << endl;
     else
-        cout << "Нет " << Q.empty() << endl;
-    Q.push('e');
-    Q.push('x');
-    Q.push('a');
-    Q.push('m');
-    Q.push('p');
-    Q.push('l');
-    Q.push('e');
-    cout << "Очередь пуста?";
+        cout << "No" << endl;
+
+    for (int i = 0; example[i] != '\0'; i++)
+        Q.push(example[i]);
+
+    cout << "Queue is empty? ";
     if (Q.empty())
-        cout << "Да" << endl;
+        cout << "Yes" << endl;
     else
-        cout << "Нет" << endl;
+        cout << "No" << endl;
+
     char &sn = Q.front(); // ссылка на первый элемент очереди;
     char &sk = Q.back();  // ссылка на последний добавленный элемент
-    cout << "Первый элемент: " << sn << endl;
-    cout << "Последний элемент" << sk << endl;
+    cout << "First element of queue: " << sn << endl;
+    cout << "Last element of queue: " << sk << endl;
     int t = Q.size(); // размер очереди
-    cout << "Кол-во элементов в очереди: " << t << endl;
+    cout << "Size of queue: " << t << endl;
+
     for (int i = 1; i <= t; i++)
     {
         sn = Q.front(); // ссылка на первый элемент очереди
@@ -37,34 +38,34 @@ int main()
         Q.pop(); // удаляем один элемент в очереди
     }
     cout << endl;
-    cout << "Очередь пуста?";
+
+    cout << "Queue is empty? ";
     if (Q.empty())
-        cout << "Да " << Q.empty() << endl;
+        cout << "Yes" << endl;
     else
-        cout << "Нет " << Q.empty() << endl;
+        cout << "No" << endl;
 
     stack<char> S;
-    cout << "Стек пуст?";
+    cout << "Stack is empty? ";
     if (S.empty())
-        cout << "Да " << S.empty() << endl;
+        cout << "Yes" << endl;
     else
-        cout << "Нет " << S.empty() << endl;
-    S.push('e');
-    S.push('x');
-    S.push('a');
-    S.push('m');
-    S.push('p');
-    S.push('l');
-    S.push('e');
-    cout << "Стек пуст?";
+        cout << "No" << endl;
+
+    for (int i = 0; example[i] != '\0'; i++)
+        S.push(example[i]);
+
+    cout << "Stack is empty? ";
     if (S.empty())
-        cout << "Да " << S.empty() << endl;
+        cout << "Yes" << endl;
     else
-        cout << "Нет " << S.empty() << endl;
+        cout << "No" << endl;
+
     char &st = S.top(); // ссылка на первый элемент очереди;
-    cout << "Первый элемент: " << st << endl;
+    cout << "First element of stack: " << st << endl;
     t = S.size(); // размер очереди
-    cout << "Кол-во элементов в очереди: " << t << endl;
+    cout << "Size of stack: " << t << endl;
+
     for (int i = 1; i <= t; i++)
     {
         st = S.top(); // ссылка на первый элемент очереди
@@ -72,9 +73,10 @@ int main()
         S.pop(); // удаляем один элемент в очереди
     }
     cout << endl;
-    cout << "Стек пуст?";
+
+    cout << "Stack is empty? ";
     if (S.empty())
-        cout << "Да " << S.empty() << endl;
+        cout << "Yes" << endl;
     else
-        cout << "Нет " << S.empty() << endl;
+        cout << "No" << endl;
 }
