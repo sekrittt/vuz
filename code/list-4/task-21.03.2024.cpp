@@ -80,8 +80,8 @@ Node *list_remove_from_end(Node *n, int K)
         tmp = (*tmp).prev;
         if (tmp != NULL)
         {
-            delete (*tmp).next;
             (*tmp).next = NULL;
+            delete (*tmp).next;
         }
         else
         {
