@@ -12,7 +12,6 @@ struct Node
 
 int depth = 1;
 int cur_depth = 0;
-int width = 0;
 
 void add(int N, Node *&Root) // функция добавления в дерево
 {
@@ -54,7 +53,6 @@ void add(int N, Node *&Root) // функция добавления в дере�
         if (cur_depth > depth)
         {
             depth = cur_depth;
-            width = pow(2, depth - 1);
         }
         cur_depth = 0;
     }
@@ -92,21 +90,19 @@ void print_tree_symmetrical(Node *tr)
     }
 }
 
-void fill_arr(int **M, Node *tr, int cur_depth = 0)
+void fill_arr(int **M, Node *tr, int cur_depth = 0, int cell = 0)
 {
     if (tr == NULL)
         return;
-    int i = 0;
-    for (; *(*(M + cur_depth) + i) != INT_MAX && i < width; i++)
-        ;
-    *(*(M + cur_depth) + i) = (*tr).data;
-    fill_arr(M, (*tr).left, cur_depth + 1);
-    fill_arr(M, (*tr).right, cur_depth + 1);
+    *(*(M + cur_depth) + cell) = (*tr).data;
+    fill_arr(M, (*tr).left, cur_depth + 1, cell - 1);
+    fill_arr(M, (*tr).right, cur_depth + 1, cell + 1);
 }
 
 void print_tree_as_tree(Node *tr)
 {
     int **M = new int *[depth];
+    int width = pow(2, depth - 1) + 1;
     for (int i = 0; i < depth; i++)
     {
         *(M + i) = new int[width];
@@ -115,17 +111,19 @@ void print_tree_as_tree(Node *tr)
             *(*(M + i) + j) = INT_MAX;
         }
     }
-    fill_arr(M, tr);
+    fill_arr(M, tr, 0, width / 2);
     for (int i = 0; i < depth; i++)
     {
         for (int j = 0; j < width; j++)
         {
+            cout << " ";
             if (*(*(M + i) + j) != INT_MAX)
             {
-                cout.width(pow(2, depth - i) / 2);
-                cout << "";
-                cout.width(0);
                 cout << *(*(M + i) + j);
+            }
+            else
+            {
+                cout << " ";
             }
         }
         cout << endl;
@@ -147,7 +145,6 @@ int main()
     (*Root).data = x;
 
     add(N, Root); // вызыв заполнения
-    cout << "Depth: " << depth << endl;
     cout << "Forward tree print: ";
     print_tree(Root);
     cout << endl;
@@ -173,11 +170,7 @@ Forward tree print: 6 4 3 5 8 7 9
 Reversed tree print: 3 5 4 7 9 8 6
 Symmetrical tree print: 3 4 5 6 7 8 9
 Print tree as tree:
-              6
-          4
-      3
-              5
-                  8
-              7
-                      9
+    6
+  4  8
+ 3 5 7 9
 */
