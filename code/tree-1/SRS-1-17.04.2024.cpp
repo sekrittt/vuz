@@ -1,0 +1,183 @@
+#include <iostream>
+#include <cmath>
+#include <climits>
+using namespace std;
+
+struct Node
+{
+    int data;    // Поле данных
+    Node *left;  // УКАЗАТЕЛЬ на левую ветку
+    Node *right; // УКАЗАТЕЛЬ на правую ветку
+};
+
+int depth = 1;
+int cur_depth = 0;
+int width = 0;
+
+void add(int N, Node *&Root) // функция добавления в дерево
+{
+    int x;
+    Node *el1, *el;             // указатели
+    for (int i = 1; i < N; i++) // нерекурсивное заполнение
+    {
+        cout << "Enter value: ";
+        cin >> x;
+
+        el1 = new Node; // выделение памяти
+        (*el1).data = x;
+        (*el1).right = NULL;
+        (*el1).left = NULL;
+
+        el = Root;
+        cur_depth++;
+
+        for (int j = 0; j < i; j++)
+        {
+            while (((*el).left != NULL) && ((*el).data > (*el1).data))
+            { //
+                el = (*el).left;
+                cur_depth++;
+            }
+            while (((*el).right != NULL) && ((*el).data <= (*el1).data))
+            { //
+                el = (*el).right;
+                cur_depth++;
+            }
+        }
+
+        if ((*el).data > (*el1).data) // добавление влево
+            (*el).left = el1;
+        else // добавление вправо
+            (*el).right = el1;
+        cur_depth++;
+
+        if (cur_depth > depth)
+        {
+            depth = cur_depth;
+            width = pow(2, depth - 1);
+        }
+        cur_depth = 0;
+    }
+}
+
+// Прямой обход дерева
+void print_tree(Node *tr)
+{
+    if (tr)
+    {
+        cout << (*tr).data << " ";
+        print_tree((*tr).left);
+        print_tree((*tr).right);
+    }
+}
+// Обратный обход дерева
+void print_tree_reversed(Node *tr)
+{
+    if (tr)
+    {
+        print_tree_reversed((*tr).left);
+        print_tree_reversed((*tr).right);
+        cout << (*tr).data << " ";
+    }
+}
+
+// Симметричный обход дерева
+void print_tree_symmetrical(Node *tr)
+{
+    if (tr)
+    {
+        print_tree_symmetrical((*tr).left); // вызов функции
+        cout << (*tr).data << " ";
+        print_tree_symmetrical((*tr).right); // вызов функции
+    }
+}
+
+void fill_arr(int **M, Node *tr, int cur_depth = 0)
+{
+    if (tr == NULL)
+        return;
+    int i = 0;
+    for (; *(*(M + cur_depth) + i) != INT_MAX && i < width; i++)
+        ;
+    *(*(M + cur_depth) + i) = (*tr).data;
+    fill_arr(M, (*tr).left, cur_depth + 1);
+    fill_arr(M, (*tr).right, cur_depth + 1);
+}
+
+void print_tree_as_tree(Node *tr)
+{
+    int **M = new int *[depth];
+    for (int i = 0; i < depth; i++)
+    {
+        *(M + i) = new int[width];
+        for (int j = 0; j < width; j++)
+        {
+            *(*(M + i) + j) = INT_MAX;
+        }
+    }
+    fill_arr(M, tr);
+    for (int i = 0; i < depth; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            if (*(*(M + i) + j) != INT_MAX)
+            {
+                cout.width(pow(2, depth - i) / 2);
+                cout << "";
+                cout.width(0);
+                cout << *(*(M + i) + j);
+            }
+        }
+        cout << endl;
+    }
+}
+
+int main()
+{
+    Node *Root = new Node; // память под корень
+    (*Root).left = NULL;
+    (*Root).right = NULL;
+    int x, N;
+
+    cout << "Please enter N: ";
+    cin >> N;
+
+    cout << "Enter value: ";
+    cin >> x;
+    (*Root).data = x;
+
+    add(N, Root); // вызыв заполнения
+    cout << "Depth: " << depth << endl;
+    cout << "Forward tree print: ";
+    print_tree(Root);
+    cout << endl;
+    cout << "Reversed tree print: ";
+    print_tree_reversed(Root);
+    cout << endl;
+    cout << "Symmetrical tree print: ";
+    print_tree_symmetrical(Root);
+    cout << endl
+         << "Print tree as tree: " << endl;
+    print_tree_as_tree(Root);
+}
+/*
+Please enter N: 7
+Enter value: 6
+Enter value: 4
+Enter value: 3
+Enter value: 5
+Enter value: 8
+Enter value: 7
+Enter value: 9
+Forward tree print: 6 4 3 5 8 7 9
+Reversed tree print: 3 5 4 7 9 8 6
+Symmetrical tree print: 3 4 5 6 7 8 9
+Print tree as tree:
+              6
+          4
+      3
+              5
+                  8
+              7
+                      9
+*/
