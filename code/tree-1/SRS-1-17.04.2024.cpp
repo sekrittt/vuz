@@ -12,6 +12,7 @@ struct Node
 
 int depth = 1;
 int cur_depth = 0;
+int width = 0;
 
 void add(int N, Node *&Root) // функция добавления в дерево
 {
@@ -90,25 +91,26 @@ void print_tree_symmetrical(Node *tr)
     }
 }
 
-void fill_arr(int **M, Node *tr, int cur_depth = 0, int cell = 0)
+void fill_arr(int *M, Node *tr, int cur_depth = 0, int cell = 0)
 {
     if (tr == NULL)
         return;
-    *(*(M + cur_depth) + cell) = (*tr).data;
+    *(M + cur_depth * width + cell) = (*tr).data;
     fill_arr(M, (*tr).left, cur_depth + 1, cell - 1);
     fill_arr(M, (*tr).right, cur_depth + 1, cell + 1);
 }
 
 void print_tree_as_tree(Node *tr)
 {
-    int **M = new int *[depth];
-    int width = pow(2, depth - 1) + 1;
+    if (tr == NULL)
+        return;
+    width = pow(2, depth - 1) + 1;
+    int *M = new int[width * depth];
     for (int i = 0; i < depth; i++)
     {
-        *(M + i) = new int[width];
         for (int j = 0; j < width; j++)
         {
-            *(*(M + i) + j) = INT_MAX;
+            *(M + i * width + j) = INT_MAX;
         }
     }
     fill_arr(M, tr, 0, width / 2);
@@ -117,9 +119,9 @@ void print_tree_as_tree(Node *tr)
         for (int j = 0; j < width; j++)
         {
             cout << " ";
-            if (*(*(M + i) + j) != INT_MAX)
+            if (*(M + i * width + j) != INT_MAX)
             {
-                cout << *(*(M + i) + j);
+                cout << *(M + i * width + j);
             }
             else
             {
