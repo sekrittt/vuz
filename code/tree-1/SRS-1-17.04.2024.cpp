@@ -10,7 +10,7 @@ struct Node
     Node *right; // УКАЗАТЕЛЬ на правую ветку
 };
 
-int depth = 1;
+int depth = 1; // кол-во уровней дерева
 int cur_depth = 0;
 int width = 0;
 
@@ -91,6 +91,7 @@ void print_tree_symmetrical(Node *tr)
     }
 }
 
+// Рекурсивно заполняется массив
 void fill_arr(int *M, Node *tr, int cur_depth = 0, int cell = 0)
 {
     if (tr == NULL)
@@ -104,13 +105,13 @@ void print_tree_as_tree(Node *tr)
 {
     if (tr == NULL)
         return;
-    width = pow(2, depth - 1) + 1;
-    int *M = new int[width * depth];
+    width = pow(2, depth - 1) + 1; // Ширина = максимальное количество элементов на последнем уровне
+    int *M = new int[width * depth]; // Вспомогательный массив на основе которого будет работать вывод
     for (int i = 0; i < depth; i++)
     {
         for (int j = 0; j < width; j++)
         {
-            *(M + i * width + j) = INT_MAX;
+            *(M + i * width + j) = INT_MAX; // Инициализируем массив, INT_MAX - указывает на отсутствие элемента для отображения и заменяется на пробел
         }
     }
     fill_arr(M, tr, 0, width / 2);
@@ -121,11 +122,11 @@ void print_tree_as_tree(Node *tr)
             cout << " ";
             if (*(M + i * width + j) != INT_MAX)
             {
-                cout << *(M + i * width + j);
+                cout << *(M + i * width + j); // i * width + j номер элемента массива для вывода, i * width смещение на возможное количество элементов уровня
             }
             else
             {
-                cout << " ";
+                cout << " "; // Пустой элемент вместо INT_MAX
             }
         }
         cout << endl;
