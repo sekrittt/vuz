@@ -62,14 +62,14 @@ Node *search_insert(Node *root, int x)
     return pnew;
 }
 
-void print_tree(Node *tr) // указатель на корень дерева или поддерева, обход которого производится
+void printTree(Node *tr) // указатель на корень дерева или поддерева, обход которого производится
 {
     if (tr == NULL)
         return; // Если отсутствует ветка дерева, то выходим из функции
     // ЕСЛИ присутствует ветка дерева, то:
     cout << (*tr).data << " "; // Вывод данных этой ветки
-    print_tree((*tr).left);    // поддерево слева
-    print_tree((*tr).right);   // поддерево  справа
+    printTree((*tr).left);     // поддерево слева
+    printTree((*tr).right);    // поддерево  справа
     return;
 }
 
@@ -102,7 +102,8 @@ void fillTree(Node *&root, int N)
         search_insert(root, rand() % 2 + 1);
 }
 
-void fillTreeFromFile(Node *&root) {
+void fillTreeFromFile(Node *&root)
+{
     ifstream file("numbers.txt");
     int num;
     file >> num;
@@ -124,7 +125,7 @@ int main()
     cout << "Random fill tree: " << endl;
     fillTree(root, N);
     cout << "Forward tree print: ";
-    print_tree(root);
+    printTree(root);
     cout << endl
          << "Reversed tree print: ";
     print_tree_reversed(root);
@@ -136,7 +137,7 @@ int main()
          << "Fill tree from file: " << endl;
     fillTreeFromFile(root);
     cout << "Forward tree print: ";
-    print_tree(root);
+    printTree(root);
     cout << endl
          << "Reversed tree print: ";
     print_tree_reversed(root);
