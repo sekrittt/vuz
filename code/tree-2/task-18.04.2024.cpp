@@ -20,7 +20,7 @@ Node *Root(int value)
     return r;
 }
 
-Node *search_insert(Node *root, int x)
+Node *searchInsert(Node *root, int x)
 {
     Node *pv = root, *prev;
     bool f = 0; // Переменная отвечающая за то что нашли  элемент или нет
@@ -99,7 +99,7 @@ void fillTree(Node *&root, int N)
 {
     root = Root(rand() % 2 + 1);
     for (int i = 1; i < N; i++)
-        search_insert(root, rand() % 2 + 1);
+        searchInsert(root, rand() % 2 + 1);
 }
 
 void fillTreeFromFile(Node *&root)
@@ -111,14 +111,14 @@ void fillTreeFromFile(Node *&root)
 
     while (file >> num)
     {
-        search_insert(root, num);
+        searchInsert(root, num);
     }
 }
 
 int main()
 {
     srand(time(0));
-    Node *root;
+    Node *root;tree-4/tree.txt
     int N;
     cout << "Please enter N: ";
     cin >> N;
