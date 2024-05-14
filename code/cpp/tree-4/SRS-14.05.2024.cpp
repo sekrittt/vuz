@@ -137,51 +137,51 @@ int main()
     cout << "Parent of found: " << (*parentOfFound).data << " Found: " << (*found).data << " isRight: " << isRight << endl;
     if (isRight)
     {
-        if ((*found).left == NULL && (*found).right == NULL)
+        if ((*found).left == NULL && (*found).right == NULL) // no Nodes
         {
             (*parentOfFound).right = NULL;
             delete found;
         }
-        else if ((*found).left != NULL && (*found).right == NULL)
+        else if ((*found).left != NULL && (*found).right == NULL) // only left Node
         {
             (*parentOfFound).right = (*found).left;
             delete found;
         }
-        else if ((*found).left == NULL && (*found).right != NULL)
+        else if ((*found).left == NULL && (*found).right != NULL) // only right Node
         {
             (*parentOfFound).right = (*found).right;
             delete found;
         }
-        else if ((*found).left != NULL && (*found).right != NULL)
+        else if ((*found).left != NULL && (*found).right != NULL) // right and left Node
         {
             (*parentOfFound).right = (*found).right;
-            Node *minEl = minTree((*found).right);
-            (*minEl).left = (*found).left;
+            Node *minEl = minTree((*found).right); // found minimal element
+            (*minEl).left = (*found).left;         // set left subtree to minimal element
             delete found;
         }
     }
     else
     {
-        if ((*found).left == NULL && (*found).right == NULL)
+        if ((*found).left == NULL && (*found).right == NULL) // no Nodes
         {
             (*parentOfFound).left = NULL;
             delete found;
         }
-        else if ((*found).left != NULL && (*found).right == NULL)
+        else if ((*found).left != NULL && (*found).right == NULL) // only left Node
         {
             (*parentOfFound).left = (*found).left;
             delete found;
         }
-        else if ((*found).left == NULL && (*found).right != NULL)
+        else if ((*found).left == NULL && (*found).right != NULL) // only right Node
         {
             (*parentOfFound).left = (*found).right;
             delete found;
         }
-        else if ((*found).left != NULL && (*found).right != NULL)
+        else if ((*found).left != NULL && (*found).right != NULL) // right and left Node
         {
             (*parentOfFound).left = (*found).right;
-            Node *minEl = minTree((*found).right);
-            (*minEl).left = (*found).left;
+            Node *minEl = minTree((*found).right); // found minimal element
+            (*minEl).left = (*found).left;         // set left subtree to minimal element
             delete found;
         }
     }
@@ -190,3 +190,20 @@ int main()
     cout << endl;
     return 0;
 }
+
+/*
+test1
+15 10 12 11 13 20 18 16 19 25 23 24
+Введите число для удаления: 12
+Древо после удаления: 15 10 13 11 20 18 16 19 25 23 24
+
+test2
+15 10 12 11 13 20 18 16 19 25 23 24
+Введите число для удаления: 25
+Древо после удаления: 15 10 12 11 13 20 18 16 19 23 24
+
+test3
+15 10 12 11 13 20 18 16 19 25 23 24
+Введите число для удаления: 20
+Древо после удаления: 15 10 12 11 13 25 23 18 16 19 24
+*/
