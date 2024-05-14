@@ -32,60 +32,35 @@ void findElement(Node *root, int value, Node *&parent, Node *&found, bool &isRig
     }
 }
 
-// remove Node From Right SubTree
-// void RNFRST(Node *root, int value)
-// {
-//     Node *tmp = NULL;    // YD
-//     Node *parent = NULL; // R
-//     bool isRight = false;
-//     findElement(root, value, parent, tmp, isRight);
-//     auto del = [](Node *&p, Node *t)
-//     {
-//         if ((*t).right != NULL && (*t).left == NULL)
-//         { // If only right child
-//             p = (*t).right;
-//         }
-//         else if ((*t).right == NULL && (*t).left != NULL)
-//         { // If only left child
-//             p = (*t).left;
-//         }
-//         else if ((*t).right != NULL && (*t).left != NULL)
-//         {
-//             // TODO: Universal algorithm
-//         }
-//         else
-//         {
-//             p = NULL;
-//         }
-//     };
-//     if (isRight)
-//     {
-//         del((*parent).right, tmp);
-//     }
-//     else
-//     {
-//         del((*parent).left, tmp);
-//     }
-//     delete tmp;
-// }
-
-void addNode(Node *&el, int v)
+Node *searchInsert(Node *root, int x)
 {
-    if (el == NULL)
+    Node *pv = root, *prev;
+    bool f = 0;
+    while (pv && (f == 0))
     {
-        el = new Node;
-        (*el).right = NULL;
-        (*el).left = NULL;
-        (*el).data = v;
+        prev = pv;
+        if (x == (*pv).data)
+        {
+            f = 1;
+        }
+        else
+        {
+            if (x < (*pv).data)
+                pv = (*pv).left;
+            else
+                pv = (*pv).right;
+        }
     }
-    else if ((*el).data <= v)
-    {
-        addNode((*el).right, v);
-    }
-    else if ((*el).data > v)
-    {
-        addNode((*el).left, v);
-    }
+
+    Node *pnew = new Node;
+    (*pnew).data = x;
+    (*pnew).left = NULL;
+    (*pnew).right = NULL;
+    if (x < (*prev).data)
+        (*prev).left = pnew;
+    else
+        (*prev).right = pnew;
+    return pnew;
 }
 
 void printTree(Node *el) // указатель на корень дерева или поддерева, обход которого производится
@@ -93,8 +68,8 @@ void printTree(Node *el) // указатель на корень дерева и
     if (el == NULL)
         return; // Если отсутствует ветка дерева, то выходим из функции
     // ЕСЛИ присутствует ветка дерева, то:
-    cout << (*el).data << " "; // Вывод данных этой ветки
     printTree((*el).left);     // поддерево слева
+    cout << (*el).data << " "; // Вывод данных этой ветки
     printTree((*el).right);    // поддерево  справа
     return;
 }
@@ -109,7 +84,7 @@ void fillTreeFromFile(Node *&root, string fileName)
     (*root).right = NULL;
     while (file >> num)
     {
-        addNode(root, num);
+        searchInsert(root, num);
     }
 }
 
@@ -139,7 +114,6 @@ int main()
     {
         isRemoveRoot = true;
     }
-    cout << "Parent of found: " << (*parentOfFound).data << " Found: " << (*found).data << " isRight: " << isRight << endl;
     if (isRemoveRoot) // If removing root of tree
     {
         if ((*found).left == NULL && (*found).right == NULL) // no Nodes
@@ -222,18 +196,53 @@ int main()
 }
 
 /*
-test1
-15 10 12 11 13 20 18 16 19 25 23 24
-Введите число для удаления: 12
-Древо после удаления: 15 10 13 11 20 18 16 19 25 23 24
+Test #1
+10 11 12 13 15 16 18 19 20 23 24 25
+Please enter value of node: 12
+Tree after deleting: 10 11 13 15 16 18 19 20 23 24 25
 
-test2
-15 10 12 11 13 20 18 16 19 25 23 24
-Введите число для удаления: 25
-Древо после удаления: 15 10 12 11 13 20 18 16 19 23 24
+Test #2
+10 11 12 13 15 16 18 19 20 23 24 25
+Please enter value of node: 20
+Tree after deleting: 10 11 12 13 15 16 18 19 23 24 25
 
-test3
-15 10 12 11 13 20 18 16 19 25 23 24
-Введите число для удаления: 20
-Древо после удаления: 15 10 12 11 13 25 23 18 16 19 24
+Test #3
+10 11 12 13 15 16 18 19 20 23 24 25
+Please enter value of node: 25
+Tree after deleting: 10 11 12 13 15 16 18 19 20 23 24
+
+Test #4
+10 11 12 13 15 16 18 19 20 23 24 25
+Please enter value of node: 13
+Tree after deleting: 10 11 12 15 16 18 19 20 23 24 25
+
+Test #5
+10 11 12 13 15 16 18 19 20 23 24 25
+Please enter value of node: 11
+Tree after deleting: 10 12 13 15 16 18 19 20 23 24 25
+
+Test #6
+10 11 12 13 15 16 18 19 20 23 24 25
+Please enter value of node: 20
+Tree after deleting: 10 11 12 13 15 16 18 19 23 24 25
+
+Test #7
+10 11 12 13 15 16 18 19 20 23 24 25
+Please enter value of node: 18
+Tree after deleting: 10 11 12 13 15 16 19 20 23 24 25
+
+Test #8
+10 11 12 13 15 16 18 19 20 23 24 25
+Please enter value of node: 16
+Tree after deleting: 10 11 12 13 15 18 19 20 23 24 25
+
+Test #9
+10 11 12 13 15 16 18 19 20 23 24 25
+Please enter value of node: 10
+Tree after deleting: 11 12 13 15 16 18 19 20 23 24 25
+
+Test #10
+9 10 11 12 13 15 16 18 19 20 23 24 25
+Please enter value of node: 10
+Tree after deleting: 9 11 12 13 15 16 18 19 20 23 24 25
 */
