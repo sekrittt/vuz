@@ -127,6 +127,7 @@ int main()
     Node *parentOfFound = new Node;
     Node *found = new Node;
     bool isRight = false;
+    bool isRemoveRoot = false;
     fillTreeFromFile(root, "tree-2.txt");
     printTree(root);
     cout << endl;
@@ -134,8 +135,37 @@ int main()
     cout << "Please enter value of node: ";
     cin >> v;
     findElement(root, v, parentOfFound, found, isRight);
+    if (parentOfFound == found)
+    {
+        isRemoveRoot = true;
+    }
     cout << "Parent of found: " << (*parentOfFound).data << " Found: " << (*found).data << " isRight: " << isRight << endl;
-    if (isRight)
+    if (isRemoveRoot) // If removing root of tree
+    {
+        if ((*found).left == NULL && (*found).right == NULL) // no Nodes
+        {
+            root = NULL;
+            delete found;
+        }
+        else if ((*found).left != NULL && (*found).right == NULL) // only left Node
+        {
+            root = (*found).left;
+            delete found;
+        }
+        else if ((*found).left == NULL && (*found).right != NULL) // only right Node
+        {
+            root = (*found).right;
+            delete found;
+        }
+        else if ((*found).left != NULL && (*found).right != NULL) // right and left Node
+        {
+            root = (*found).right;
+            Node *minEl = minTree((*found).right); // found minimal element
+            (*minEl).left = (*found).left;         // set left subtree to minimal element
+            delete found;
+        }
+    }
+    else if (isRight) // If Node in right subtree
     {
         if ((*found).left == NULL && (*found).right == NULL) // no Nodes
         {
@@ -160,7 +190,7 @@ int main()
             delete found;
         }
     }
-    else
+    else // If Node in left subtree
     {
         if ((*found).left == NULL && (*found).right == NULL) // no Nodes
         {
