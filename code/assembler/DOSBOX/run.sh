@@ -1,0 +1,1 @@
+dosbox -c "mount d: ./" -c "d:" -c "COMPILE.BAT $1"
