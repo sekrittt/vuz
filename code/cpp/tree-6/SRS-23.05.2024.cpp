@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iostream>
 #include <fstream>
+#include <cmath>
 using namespace std;
 
 struct Node
@@ -8,7 +9,25 @@ struct Node
     int data;
     Node *right;
     Node *left;
+    int levels;
 };
+
+void updateCounts(Node *el)
+{
+    if (el != NULL)
+    {
+        if ((*el).left != NULL || (*el).right != NULL)
+            (*el).levels++;
+        updateCounts((*el).left);
+        updateCounts((*el).right);
+        int t = 0, f = 0;
+        if ((*el).left != NULL)
+            t = (*(*el).left).levels;
+        if ((*el).right != NULL)
+            f = (*(*el).right).levels;
+        (*el).levels += max(t, f);
+    }
+}
 
 Node *search_insert(Node *Root, int x)
 {
@@ -76,12 +95,14 @@ void balanceRL(Node *&root)
 {
     Node *p = root, *p1 = NULL, *p2 = NULL;
     p1 = (*p).right;
-
     p2 = (*p1).left;
+
+    // Right rotate
     (*p1).left = (*p2).right;
     (*p2).right = p1;
-    (*p).right = (*p2).left;
 
+    // Left rotate
+    (*p).right = (*p2).left;
     (*p2).left = p;
 
     p = p2;
@@ -93,12 +114,12 @@ void balanceLR(Node *&root)
     Node *p, *p1 = NULL, *p2 = NULL;
     p = root;
     p1 = (*p).left;
-
     p2 = (*p1).right;
+    // Left rotate
     (*p1).right = (*p2).left;
     (*p2).left = p1;
+    // Right rotate
     (*p).left = (*p2).right;
-
     (*p2).right = p;
 
     p = p2;
@@ -141,15 +162,52 @@ Node *findElement(Node *root, int value, Node *&parent)
 int main()
 {
     Node *root = NULL;
+
+    bool needToBalance = false;
+    bool isLeftBalance = false;
     readFromFile(root, "file-3.txt");
+    updateCounts(root);
     cout << "Filled tree: ";
     print(root);
     cout << endl;
-    Node *parentOfFound = NULL;
-    Node *found17 = findElement(root, 17, parentOfFound);
-    balanceRL(found17);
-    (*parentOfFound).right = found17;
-    cout << "Tree after R-L balance: ";
+
+    if ((*root).left == NULL && (*root).right != NULL)
+    {
+        needToBalance = (*(*root).right).levels > 0;
+        isLeftBalance = false;
+    }
+    else if ((*root).left != NULL && (*root).right == NULL)
+    {
+        needToBalance = (*(*root).left).levels > 0;
+        isLeftBalance = true;
+    }
+    else if ((*root).left != NULL && (*root).right != NULL)
+    {
+        needToBalance = abs((*(*root).left).levels - (*(*root).right).levels) > 1;
+        isLeftBalance = ((*(*root).left).levels - (*(*root).right).levels) > 0;
+    }
+
+    if (needToBalance)
+    {
+        cout << "Need to " << (isLeftBalance ? "left" : "right") << " balance!" << endl;
+        if (isLeftBalance)
+        {
+            balanceLR((*root).left);
+        }
+        else
+        {
+            balanceRL((*root).right);
+        }
+    }
+
+    updateCounts(root);
+
+    cout << "Tree after balance: ";
     print(root);
     cout << endl;
 }
+
+/*
+Filled tree: 12 8 10 17 15 20 19 18 21
+Tree after R-L balance: 12 8 10 19 17 15 18 20 21
+*/
