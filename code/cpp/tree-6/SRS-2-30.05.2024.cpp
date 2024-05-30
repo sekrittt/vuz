@@ -14,6 +14,14 @@ struct Node
     Node *right;
 };
 
+void balanceL(Node *&p, Node *p1)
+{
+    (*p).left = (*p1).right;
+    (*p1).right = p;
+    (*p).bal = 0;
+    p = p1;
+}
+
 void search(int x, Node *&p, bool &h)
 {
     Node *p1 = NULL, *p2 = NULL;
@@ -51,10 +59,7 @@ void search(int x, Node *&p, bool &h)
                 if ((*p1).bal == -1)
                 {
                     // одиночная LL-ротация
-                    (*p).left = (*p1).right;
-                    (*p1).right = p;
-                    (*p).bal = 0;
-                    p = p1;
+                    balanceL(p, p1);
                 }
                 else
                 {
@@ -72,6 +77,16 @@ void search(int x, Node *&p, bool &h)
                     {
                         (*p).bal = 0;
                     }
+
+                    if ((*p2).bal == 1)
+                    {
+                        (*p1).bal = -1;
+                    }
+                    else
+                    {
+                        (*p1).bal = 0;
+                    }
+                    p = p2;
                 }
                 (*p).bal = 0;
                 h = false;
@@ -142,21 +157,6 @@ void search(int x, Node *&p, bool &h)
     }
 }
 
-void readFromFile(Node *&root, string fileName)
-{
-    ifstream file(fileName);
-    int num;
-    bool h = false;
-    root = new Node;
-    file >> (*root).key;
-    (*root).left = NULL;
-    (*root).right = NULL;
-    while (file >> num)
-    {
-        search(num, root, h);
-    }
-}
-
 void print(Node *tr)
 {
     if (!tr)
@@ -165,6 +165,17 @@ void print(Node *tr)
     cout << (*tr).key << " ";
     print((*tr).left);
     print((*tr).right);
+}
+
+void readFromFile(Node *&root, string fileName)
+{
+    ifstream file(fileName);
+    int num;
+    bool h = false;
+    while (file >> num)
+    {
+        search(num, root, h);
+    }
 }
 
 int main()
