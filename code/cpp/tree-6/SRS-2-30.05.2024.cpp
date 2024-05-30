@@ -64,6 +64,7 @@ void search(int x, Node *&p, bool &h)
                 else
                 {
                     // двойная LR-ротация
+                    cout << "LR-rotation +10" << endl;
                     p2 = (*p1).right;
                     (*p1).right = (*p2).left;
                     (*p2).left = p1;
