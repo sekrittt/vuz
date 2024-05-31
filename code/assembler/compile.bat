@@ -1,3 +1,3 @@
-tasm %1.asm
-tlink %1.obj
-%1.exe
+LH tasm /m3 %1.asm
+LH tlink /3 %1.obj
+LH %1.exe

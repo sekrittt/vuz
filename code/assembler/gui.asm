@@ -11,44 +11,101 @@ main proc
     mov ax, 0011h
     int 10h
 
-    mov dx, 100
-    mov bx, 0
-    mov cx, 100
+    mov ax, 0 ; start y
+    mov bx, 100 ; start y + height
+    mov cx, 0 ; start x
+    mov dx, 100 ; start x + width
+    call drawRect
+
+    call delay
+
+
+    mov ax, 200 ; y
+    mov cx, 0 ; start x
+    mov dx, 100 ; start x + width
+    call drawWhiteLine
+
+    call delay
+    call clearScreen
+
+    mov ax, 100 ; start y
+    mov bx, 200 ; start y + height
+    mov cx, 0 ; start x
+    mov dx, 100 ; start x + width
     call drawRect
 
     ; jmp exit
+    jmp _wait
 main endp
 
+clearScreen proc
+    mov ax, 0011h
+    int 10h
+clearScreen endp
+
+delay proc ; 33 милисекунды = 30 fps
+    ; mov cx, 0fh
+    ; mov dx, 4240h
+    mov cx, 00h
+    mov dx, 8235h
+    mov ax, 8600h
+    int 15h
+    ret
+delay endp
+
 drawRect proc
-    push dx
+    push ax
     push bx
     push cx
-    mov ax, cx
+    push dx
+
     call drawWhiteLine
+
     pop dx
-    pop bx
     pop cx
-    dec dx
-    cmp dx, 0
-    jne drawRect
+    pop bx
+    pop ax
+
+    inc ax
+    cmp ax, bx
+    jna drawRect
 
 drawRect endp
 
 drawWhiteLine proc
+
     push ax
+    push dx
+    mov dx, ax ; y
+
+    push cx
+    mov cx, cx ; x
+
+    mov bh, 0
 
     mov ah, 0Ch
-    mov bh, 0
-    mov cx, bx
     mov al, 1
+
     int 10h
 
+    pop cx
+    pop dx
     pop ax
-    inc bx
-    cmp bx, ax
+
+    inc cx
+    cmp cx, dx
     jna drawWhiteLine
     ret
 drawWhiteLine endp
+
+_wait proc
+    mov ah, 01h ; Function 01h Read character from stdin with echo
+    int 21h
+    cmp al, 1Bh ; Check is Escape
+    je exit
+    jne _wait ; Continue read
+    ret
+_wait endp
 
 exit proc
     mov ax, 0003h
