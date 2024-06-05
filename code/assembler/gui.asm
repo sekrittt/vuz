@@ -2,41 +2,8 @@
 .stack 100h
 
 
-
+; extern drawRect:proc
 .code
-main proc
-    mov ax, @data ;
-    mov ds, ax
-
-    mov ax, 0011h
-    int 10h
-
-    mov ax, 0 ; start y
-    mov bx, 100 ; start y + height
-    mov cx, 0 ; start x
-    mov dx, 100 ; start x + width
-    call drawRect
-
-    call delay
-
-
-    mov ax, 200 ; y
-    mov cx, 0 ; start x
-    mov dx, 100 ; start x + width
-    call drawWhiteLine
-
-    call delay
-    call clearScreen
-
-    mov ax, 100 ; start y
-    mov bx, 200 ; start y + height
-    mov cx, 0 ; start x
-    mov dx, 100 ; start x + width
-    call drawRect
-
-    ; jmp exit
-    jmp _wait
-main endp
 
 clearScreen proc
     mov ax, 0011h
@@ -53,24 +20,7 @@ delay proc ; 33 милисекунды = 30 fps
     ret
 delay endp
 
-drawRect proc
-    push ax
-    push bx
-    push cx
-    push dx
 
-    call drawWhiteLine
-
-    pop dx
-    pop cx
-    pop bx
-    pop ax
-
-    inc ax
-    cmp ax, bx
-    jna drawRect
-
-drawRect endp
 
 drawWhiteLine proc
 
@@ -113,4 +63,42 @@ exit proc
     mov ax, 4C00h
     int 21h
 exit endp
+
+
+include drawRect.asm
+
+main proc
+    mov ax, @data ;
+    mov ds, ax
+
+    call clearScreen
+
+    mov ax, 0 ; start y
+    mov bx, 100 ; start y + height
+    mov cx, 0 ; start x
+    mov dx, 100 ; start x + width
+    call drawRect
+
+    call delay
+
+
+    mov ax, 200 ; y
+    mov cx, 0 ; start x
+    mov dx, 100 ; start x + width
+    call drawWhiteLine
+
+    call delay
+    call clearScreen
+
+    mov ax, 100 ; start y
+    mov bx, 200 ; start y + height
+    mov cx, 0 ; start x
+    mov dx, 100 ; start x + width
+    call drawRect
+
+    ; jmp exit
+    jmp _wait
+main endp
+
+
 end main

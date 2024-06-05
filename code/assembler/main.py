@@ -157,6 +157,8 @@ def asm_create(form: str) -> str:
 
         elif i[0] == "w":
             x = int(i[1:])
+            if abs(old_x - (x + old_x)) < 10 and old_x == 0:
+                print(f"{old_x=}", f"{x+old_x=}")
 
             code += f"""
     mov ax, {y}
@@ -170,13 +172,11 @@ def asm_create(form: str) -> str:
             old_x += int(i[1:])
 
     frameText = (
-        code
+        "call clearScreen\n"
+        + code
         + """
-call delay
-call clearScreen
-
-
-    """
+    call delay
+"""
     )
 
     return frameText
@@ -188,11 +188,11 @@ if __name__ == "__main__":
     data: str = ""
     j = 0
     for i in sorted(os.listdir("./frames")):
-        if j >= 75:
+        if j >= 320:
             break
         j += 1
-        # if j < 100:
-        #     continue
+        if j < 300:
+            continue
         print(f'Processing frame "{i}"')
         f = form(os.path.join(".", "frames", i))
         data += f"; {i}\n" + asm_create(f)
