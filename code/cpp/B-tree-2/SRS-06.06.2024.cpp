@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -159,19 +160,16 @@ void printtree(page *p, long int L)
     }
 }
 
-int main()
+void readFromFile(page *&root, string fileName)
 {
-    page *root, *q;
-    long int x;
+    ifstream file(fileName);
+    int num;
     bool h;
     item *u;
-    root = NULL;
-    cout << "Enter key: ";
-    cin >> x;
-    while (x != 0)
+    page *q;
+    while (file >> num)
     {
-        search(x, root, h, u);
-        // cout << "h=" << h << endl;
+        search(num, root, h, u);
         if (h)
         {
             q = root;
@@ -180,10 +178,196 @@ int main()
             (*root).p0 = q;
             (*root).e[1] = u;
         }
-        cout << "B-tree: " << endl;
-        printtree(root, 1);
-        cout << "Enter key: ";
-        cin >> x;
     }
+}
+
+void underflow(page *c, page *a, int s, bool &h)
+{
+    page *b;
+    int i, k, mb, mc;
+    mc = (*c).m;
+    if (s < mc)
+    {
+        s++;
+        b = (*(*c).e[s]).p;
+        mb = (*b).m;
+        k = (mb - n + 1) / 2;
+        (*a).e[n] = (*c).e[s];
+        if (k > 0)
+        {
+            for (i = 1; i <= k - 1; i++)
+            {
+                (*a).e[i + n] = (*b).e[i];
+            }
+            (*c).e[s] = (*b).e[k];
+            (*(*c).e[s]).p = b;
+            (*b).p0 = (*(*b).e[k]).p;
+            mb = mb - k;
+            for (i = 1; i <= mb; i++)
+            {
+                (*b).e[i] = (*b).e[i + k];
+            }
+            (*b).m = mb;
+            (*a).m = n - 1 + k;
+            h = false;
+        }
+        else
+        {
+            for (i = 1; i <= n; i++)
+            {
+                (*a).e[i + n] = (*b).e[i];
+            }
+            for (i = s; i <= mc - 1; i++)
+            {
+                (*c).e[i] = (*c).e[i + 1];
+            }
+            (*a).m = nn;
+            (*c).m = mc - 1;
+            h = (*c).m < n;
+        }
+    }
+    else
+    {
+        if (s == 1)
+        {
+            b = (*c).p0;
+        }
+        else
+        {
+            b = (*(*c).e[s - 1]).p;
+        }
+        mb = (*b).m + 1;
+        k = (mb - n) / 2;
+        if (k > 0)
+        {
+            for (i = n - 1; i >= 1; i--)
+            {
+                (*a).e[i + k] = (*a).e[i];
+            }
+            (*a).e[k] = (*c).e[s];
+            (*(*a).e[k]).p = (*a).p0;
+            mb -= k;
+            for (i = k - 1; i >= 1; i--)
+            {
+                (*a).e[i] = (*b).e[i + mb];
+            }
+            (*a).p0 = (*(*b).e[mb]).p;
+            (*c).e[s] = (*b).e[mb];
+            (*(*c).e[s]).p = a;
+            (*b).m = mb - 1;
+            (*a).m = n - 1 + k;
+            h = false;
+        }
+        else
+        {
+            (*b).e[mb] = (*c).e[s];
+            (*(*b).e[mb]).p = (*a).p0;
+            for (i = 1; i <= n - 1; i++)
+            {
+                (*b).e[i + mb] = (*a).e[i];
+            }
+            (*b).m = nn;
+            (*c).m = mc - 1;
+            h = (*c).m < n;
+        }
+    }
+}
+void del(page *p, bool &h, page *a, int k)
+{
+    page *q;
+    q = (*(*p).e[(*p).m]).p;
+    if (q != NULL)
+    {
+        del(q, h, a, k);
+        if (h)
+        {
+            underflow(p, q, (*p).m, h);
+        }
+    }
+    else
+    {
+        (*(*p).e[(*p).m]).p = (*(*a).e[k]).p;
+        (*a).e[k] = (*p).e[(*p).m];
+        (*p).m--;
+        h < (*p).m < n;
+    }
+}
+
+void _delete(int x, page *a, bool &h)
+{
+    int i, k, l, r;
+    page *q;
+    if (a == NULL)
+    {
+        cout << "Key is not in tree" << endl;
+        h = false;
+    }
+    else
+    {
+        l = 1;
+        r = (*a).m;
+        while (!(l > r))
+        {
+            k = (l + r) / 2;
+            if (x <= (*(*a).e[k]).key)
+            {
+                r = k - 1;
+            }
+            if (x >= (*(*a).e[k]).key)
+            {
+                l = k + 1;
+            }
+        }
+        if (r == 0)
+        {
+            q = (*a).p0;
+        }
+        else
+        {
+            q = (*(*a).e[r]).p;
+        }
+        if (l - r > 1)
+        {
+            if (q == NULL)
+            {
+                (*a).m--;
+                h = (*a).m < n;
+                for (i = k; i <= (*a).m; i++)
+                {
+                    (*a).e[i] = (*a).e[i + 1];
+                }
+            }
+            else
+            {
+                del(q, h, a, k);
+                if (h)
+                {
+                    underflow(a, q, r, h);
+                }
+            }
+        }
+        else
+        {
+            _delete(x, q, h);
+            if (h)
+            {
+                underflow(a, q, r, h);
+            }
+        }
+    }
+}
+
+int main()
+{
+    page *root, *q;
+    bool h;
+    root = NULL;
+    readFromFile(root, "file.txt");
+    printtree(root, 1);
+    int x;
+    cout << "Enter element to delete: ";
+    cin >> x;
+    _delete(x, root, h);
+    printtree(root, 1);
     return 0;
 }
