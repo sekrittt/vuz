@@ -3,7 +3,6 @@
 
 .data
     msg db "Hello, wrold!", 13, 10, "$"
-    capsState db 8
     buffer db 17
 
 .code
@@ -47,12 +46,14 @@ main proc
     mov dx, offset msg ;
     int 21h ; dos прирывание
 
-    mov ah, 02h
-    int 16h
+    ; mov ah, 02h
+    ; int 16h
 
-    mov cl, al
+    ; mov cl, al
 
-    jmp wait_caps_lock
+    ; jmp wait_caps_lock
+
+    jmp read_loop
 
     mov ax, 4C00h
     int 21h
@@ -79,9 +80,9 @@ wait_caps_lock endp
 read_loop proc
     mov ah, 08h ; Function 01h Read character from stdin with echo
     int 21h
-    cmp al, "9" ; character is carriage return?
+    cmp al, 09h ; character is carriage return?
     je exit ; yes? exit the loop
-    stosb ; store the character at es:di and increment di
+    ; stosb ; store the character at es:di and increment di
     jmp read_loop ; loop again
 read_loop endp
 

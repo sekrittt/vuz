@@ -184,20 +184,21 @@ def asm_create(form: str) -> str:
 
 if __name__ == "__main__":
     # f = form("t.jpg")
-    # f = form("yTogR9yLc.png")
-    data: str = ""
-    j = 0
-    for i in sorted(os.listdir("./frames")):
-        if j >= 320:
-            break
-        j += 1
-        if j < 300:
-            continue
-        print(f'Processing frame "{i}"')
-        f = form(os.path.join(".", "frames", i))
-        data += f"; {i}\n" + asm_create(f)
+    f = form("yTogR9yLc.png")
+    # data: str = ""
+    # j = 0
+    # for i in sorted(os.listdir("./frames")):
+    #     if j >= 320:
+    #         break
+    #     j += 1
+    #     if j < 300:
+    #         continue
+    #     print(f'Processing frame "{i}"')
+    #     f = form(os.path.join(".", "frames", i))
+    #     data += f"; {i}\n" + asm_create(f)
 
     # print(f)
+    data = asm_create(f)
 
     with open("smth.asm", "w", encoding="utf-8") as f:
         f.write(asm_build(data))
