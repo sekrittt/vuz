@@ -58,7 +58,14 @@ main proc
 
     xor ax, ax
     mov ax, 4000h
-    mov cx, byte [offset buffer + 1]
+
+    push bx
+
+    mov bl, buffer + 1
+    mov cx, bx
+
+    pop bx
+
     mov dx, offset buffer + 2
     int 21h
     jc file_error_handler

@@ -193,6 +193,7 @@ void underflow(page *c, page *a, int s, bool &h)
         mb = (*b).m;
         k = (mb - n + 1) / 2;
         (*a).e[n] = (*c).e[s];
+        (*(*a).e[n]).p = (*b).p0;
         if (k > 0)
         {
             for (i = 1; i <= k - 1; i++)
@@ -202,7 +203,7 @@ void underflow(page *c, page *a, int s, bool &h)
             (*c).e[s] = (*b).e[k];
             (*(*c).e[s]).p = b;
             (*b).p0 = (*(*b).e[k]).p;
-            mb = mb - k;
+            mb -= k;
             for (i = 1; i <= mb; i++)
             {
                 (*b).e[i] = (*b).e[i + k];
@@ -289,7 +290,7 @@ void del(page *p, bool &h, page *a, int k)
         (*(*p).e[(*p).m]).p = (*(*a).e[k]).p;
         (*a).e[k] = (*p).e[(*p).m];
         (*p).m--;
-        h < (*p).m < n;
+        h = (*p).m < n;
     }
 }
 
@@ -306,7 +307,7 @@ void _delete(int x, page *a, bool &h)
     {
         l = 1;
         r = (*a).m;
-        while (!(l > r))
+        do
         {
             k = (l + r) / 2;
             if (x <= (*(*a).e[k]).key)
@@ -317,7 +318,7 @@ void _delete(int x, page *a, bool &h)
             {
                 l = k + 1;
             }
-        }
+        } while (!(l > r));
         if (r == 0)
         {
             q = (*a).p0;
@@ -368,6 +369,14 @@ int main()
     cout << "Enter element to delete: ";
     cin >> x;
     _delete(x, root, h);
+    if (h)
+    {
+        if ((*root).m == 0)
+        {
+            q = root;
+            root = (*q).p0;
+        }
+    }
     printtree(root, 1);
     return 0;
 }
