@@ -5,14 +5,17 @@
     msgFirstOperand db "Enter first number: ", "$"
     msgSecondOperand db "Enter second number: ", "$"
     msgOperators db "Select operator (+, -, *, /): ", "$"
+    msgIncorectNumber db "Incorrect number", "$"
+    msgDivisionbyZero db "Division by zero", "$"
+    msgUnknownOperator db "Unknown operator", "$"
     newLine db 0Dh, 0Ah, "$"
-    cursorRight DB 27,'[9C$',27,'[=7|'
-    operand1 db 254, '$','$','$','$','$','$','$','$', '$','$','$','$'
-    operand2 db 254, '$','$','$','$','$','$','$','$', '$','$','$','$'
-    operator db 254, '$','$','$','$','$','$','$','$', '$','$','$','$'
+    operand1 db 254, 0, 254 dup("$")
+    operand2 db 254, 0, 254 dup("$")
+    operator db 254, 0, 254 dup("$")
 
 .code
-include io.asm
+include io.asm ; input-output lib
+include s2n.asm ; string to number lib
 main proc
     mov ax, @data ;
     mov ds, ax
@@ -32,17 +35,75 @@ main proc
     mov bx, offset operator
     call input
 
-    mov ax, offset operand1 + 2
-    call println
+    mov si, offset operand1 + 2
+    call string_to_number ; result in ax
+    push ax
 
-    mov ax, offset operator + 2
-    call println
+    mov si, offset operand2 + 2
+    call string_to_number
+    mov bx, ax
+    pop ax
 
-    mov ax, offset operand2 + 2
+    mov cl, operator + 2
+    cmp cx, "+"
+    je _add
+    mov cl, operator + 2
+    cmp cx, "-"
+    je _sub
+    mov cl, operator + 2
+    cmp cx, "*"
+    je _mul
+    mov cl, operator + 2
+    cmp cx, "/"
+    je _div
+
+    ; unknown operator
+    mov ax, offset msgUnknownOperator
     call println
 
     call exit
 main endp
+
+; ax - first number
+; bx - second number
+_add proc
+    add ax, bx
+    call print_int
+    call exit
+_add endp
+
+; ax - first number
+; bx - second number
+_sub proc
+    sub ax, bx
+    call print_int
+    call exit
+_sub endp
+
+; ax - first number
+; bx - second number
+_mul proc
+    imul bx ; ax = ax * bx
+    call print_int
+    call exit
+_mul endp
+
+; ax - first number
+; bx - second number
+_div proc
+    cmp bx, 0
+    je _div_division_by_zero
+
+    cwd ; заполним DX знаковым битом из AX
+    idiv bx
+    call print_int
+
+    call exit
+_div_division_by_zero:
+    mov ax, offset msgDivisionbyZero
+    call println
+    call exit
+_div endp
 
 exit proc
     mov ax, 4C00h
