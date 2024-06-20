@@ -8,10 +8,12 @@
     msgIncorectNumber db "Incorrect number", "$"
     msgDivisionbyZero db "Division by zero", "$"
     msgUnknownOperator db "Unknown operator", "$"
+    msgContinueQuestion db "Continue (y/n): ", "$"
     newLine db 0Dh, 0Ah, "$"
     operand1 db 254, 0, 254 dup("$")
     operand2 db 254, 0, 254 dup("$")
     operator db 254, 0, 254 dup("$")
+    continueQuestionAnswer db 254, 0, 254 dup("$")
 
 .code
 include io.asm ; input-output lib
@@ -23,6 +25,7 @@ main proc
     mov ax, 0003h
     int 10h
 
+main_loop:
     mov ax, offset msgFirstOperand
     mov bx, offset operand1
     call input
@@ -61,15 +64,25 @@ main proc
     mov ax, offset msgUnknownOperator
     call println
 
+continue:
+    mov ax, offset msgContinueQuestion
+    mov bx, offset continueQuestionAnswer
+    call input
+
+    mov cl, continueQuestionAnswer + 2
+    cmp cx, "n"
+    jne main_loop
+
     call exit
 main endp
+
 
 ; ax - first number
 ; bx - second number
 _add proc
     add ax, bx
     call print_int
-    call exit
+    jmp continue
 _add endp
 
 ; ax - first number
@@ -77,7 +90,7 @@ _add endp
 _sub proc
     sub ax, bx
     call print_int
-    call exit
+    jmp continue
 _sub endp
 
 ; ax - first number
@@ -85,7 +98,7 @@ _sub endp
 _mul proc
     imul bx ; ax = ax * bx
     call print_int
-    call exit
+    jmp continue
 _mul endp
 
 ; ax - first number
@@ -98,11 +111,11 @@ _div proc
     idiv bx
     call print_int
 
-    call exit
+    jmp continue
 _div_division_by_zero:
     mov ax, offset msgDivisionbyZero
     call println
-    call exit
+    jmp continue
 _div endp
 
 exit proc
