@@ -24,7 +24,7 @@ int M2[5][5] = {
 
 int pn, pk;
 
-void SHIRINA1(int v)
+void width1(int v)
 {
     int OCH[__size1 + 1];
     pn = 0;        // начало очереди
@@ -52,7 +52,7 @@ void SHIRINA1(int v)
     cout << endl;
 }
 
-void SHIRINA2(int v)
+void width2(int v)
 {
     int OCH[__size2 + 1];
     pn = 0;        // начало очереди
@@ -102,7 +102,7 @@ int main()
 
     cout << "Please enter start value for first graph: ";
     cin >> v;
-    SHIRINA1(v - 1);
+    width1(v - 1);
 
     cout << "M2: " << endl;
     cout << "  1 2 3 4 5" << endl;
@@ -122,7 +122,7 @@ int main()
 
     cout << "Please enter start value for second graph: ";
     cin >> v;
-    SHIRINA2(v - 1);
+    width2(v - 1);
 
     return 0;
 }
