@@ -56,12 +56,12 @@ print_int proc
    jns     print_int_oi1
 
 ; Если оно отрицательное, выведем минус и оставим его модуль.
-;    mov  cx, ax
-;    mov     ah, 02h
-;    mov     dl, '-'
-;    int     21h
-;    mov  ax, cx
-;    neg     ax
+   mov  cx, ax
+   mov     ah, 02h
+   mov     dl, '-'
+   int     21h
+   mov  ax, cx
+   neg     ax
 
 ; Количество цифр будем держать в CX.
 print_int_oi1:
@@ -94,12 +94,12 @@ print_int_oi3:
 ; Повторим ровно столько раз, сколько цифр насчитали.
     loop    print_int_oi3
 
-    mov dl, 0Dh
-    mov ah, 02h
-    int 21h
-    mov dl, 0Ah
-    mov ah, 02h
-    int 21h
+    ; mov dl, 0Dh
+    ; mov ah, 02h
+    ; int 21h
+    ; mov dl, 0Ah
+    ; mov ah, 02h
+    ; int 21h
 
     ret
 print_int endp

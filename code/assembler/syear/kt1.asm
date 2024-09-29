@@ -4,7 +4,6 @@
 
 .data
     old_handler dd ? ; address of interrupt handler
-    msg db "Yes! Exit)", "$"
 
 
 .code
@@ -52,7 +51,6 @@ start proc near
     ; int 21h ; DOS interrupt
 
     ; IRQ1 or INT9 - keyboard
-    ; IRQ12 or INT74 - mouse
     ; Save old handler
     mov ax, 3509h ; AH - 35h, AL - 09h - keyboard
     int 21h
