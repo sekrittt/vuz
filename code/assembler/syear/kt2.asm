@@ -43,14 +43,16 @@ mouse_handler proc far
 mouse_handler endp
 
 clearScreen proc
-    mov ax, 0012h
+    mov ax, 0011h
     int 10h
     ret
 clearScreen endp
 
 exit proc
     ;
-    mov ax, 001Fh
+    mov ax, 000Ch
+    mov cx, 0000h
+    mov dx, offset mouse_handler
     int 33h
     ;
 
