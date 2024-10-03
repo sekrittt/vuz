@@ -1,5 +1,5 @@
 .model small
-.186
+.386
 .stack 100h
 
 .data
@@ -8,7 +8,7 @@
 
 .code
 include libs\io.asm
-start proc near
+start proc
     ; IRQ1 or INT9 - keyboard
     ; Save old handler
     mov ax, 3509h
@@ -23,27 +23,30 @@ start proc near
     int 21h
 start endp
 
-keyboard_handler proc far
+keyboard_handler proc
+    pusha
     push ax
-    xor ax, ax
-    in al, 60h
-    cmp al, 1ch
-    pop ax
-    jne skip
-    push ax
-    mov al, 20h
-    out 20h, al
+    ; xor ax, ax
+    ; in al, 60h
+    ; cmp al, 1ch
+    ; pop ax
+    ; jne skip
+    ; push ax
+    ; mov al, 20h
+    ; out 20h, al
     xor ax, ax
     mov al, "Y"
     call println_text
     pop ax
-    call exit
-
-skip:
-    mov al, 20h
-    out 20h, al
+    popa
     jmp cs:old_handler
     iret
+
+; skip:
+;     ; mov al, 20h
+;     ; out 20h, al
+;     jmp cs:old_handler
+;     iret
 keyboard_handler endp
 
 exit proc

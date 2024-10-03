@@ -94,12 +94,12 @@ print_int_oi3:
 ; Повторим ровно столько раз, сколько цифр насчитали.
     loop    print_int_oi3
 
-    ; mov dl, 0Dh
-    ; mov ah, 02h
-    ; int 21h
-    ; mov dl, 0Ah
-    ; mov ah, 02h
-    ; int 21h
+    mov dl, 0Dh
+    mov ah, 02h
+    int 21h
+    mov dl, 0Ah
+    mov ah, 02h
+    int 21h
 
     ret
 print_int endp
