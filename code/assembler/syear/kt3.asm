@@ -1,16 +1,19 @@
 .model small
+.386
 .stack 100h
 
 .data
     msgANumber db "Enter 'a' number: ", "$"
     msgBNumber db "Enter 'b' number: ", "$"
     msgCNumber db "Enter 'c' number: ", "$"
-    msgIncorectNumber db "Incorrect number", "$"
-    msgDivisionbyZero db "Division by zero", "$"
+    msgIncorectNumber db "Error! Incorrect number", "$"
+    msgDivisionbyZero db "Error! Division by zero", "$"
     msgNoRoots db "No roots", "$"
-    msgAShouldBeMoreZero db "'a' number should be more 0"
-    msgBShouldBeMoreZero db "'b' number should be more 0"
-    msgCShouldBeMoreZero db "'c' number should be more 0"
+    msgAShouldBeNEZero db "Error! 'a' number should be not equal 0!", "$"
+    msgBShouldBeNEZero db "Error! 'b' number should be not equal 0!", "$"
+    msgCShouldBeNEZero db "Error! 'c' number should be not equal 0!", "$"
+    msgResultRoots db "Roots: ", "$"
+    msgResultRoot db "Root: ", "$"
     msgContinueQuestion db "Continue (y/n): ", "$"
     newLine db 0Dh, 0Ah, "$"
     aNumber db 254, 0, 254 dup("$")
@@ -49,14 +52,36 @@ main_loop:
 
     mov si, offset bNumber + 2
     call string_to_number
+    cmp ax, 0
+    je b_is_zero
     mov bx, ax
 
     mov si, offset cNumber + 2
     call string_to_number
+    cmp ax, 0
+    je c_is_zero
     mov cx, ax
     pop ax
 
     call calculate
+
+a_is_zero:
+    xor ax, ax
+    mov ax, offset msgAShouldBeNEZero
+    call println
+    jmp continue
+
+b_is_zero:
+    xor ax, ax
+    mov ax, offset msgBShouldBeNEZero
+    call println
+    jmp continue
+
+c_is_zero:
+    xor ax, ax
+    mov ax, offset msgCShouldBeNEZero
+    call println
+    jmp continue
 
 continue:
     mov ax, offset msgContinueQuestion
@@ -102,12 +127,25 @@ calculate proc
 one_root:
     pop bx
     pop ax
+    call calcRoots ; Calculate roots ; ax - 'a', bx - 'b', dx - 'D' ; ax - first root, bx - second root
+    push ax
+    mov ax, offset msgResultRoot
+    call println
+    pop ax
+    call print_int
     ret
 
 two_roots:
     pop bx
     pop ax
-    call calcRoots ; Calculate roots
+    call calcRoots ; Calculate roots ; ax - 'a', bx - 'b', dx - 'D' ; ax - first root, bx - second root
+    push ax
+    mov ax, offset msgResultRoots
+    call println
+    pop ax
+    call print_int
+    mov ax, bx
+    call print_int
     ret
 
 zero_roots: ; No roots
@@ -117,109 +155,94 @@ zero_roots: ; No roots
     mov ax, offset msgNoRoots
     call println
     ret
-
-a_is_zero:
-    xor ax, ax
-    mov ax, offset msgAShouldBeMoreZero
-    call println
-    ret
-
-b_is_zero:
-    xor ax, ax
-    mov ax, offset msgBShouldBeMoreZero
-    call println
-    ret
-
-c_is_zero:
-    xor ax, ax
-    mov ax, offset msgCShouldBeMoreZero
-    call println
-    ret
 calculate endp
 
-; Input: ax - number
+; Input: ax - number ; ax = n
 ; Output: ax - root
 sqrt proc
     push bx
     push cx
     push dx
+    push si
+    xor dx, dx
 
     cmp ax, 0
     je sqrt_skip
     mov bx, ax ; bx = res
     mov cx, ax ; cx = n
-    mov dx, -1
+    mov si, -1
 
 sqrt_loop:
-    cwd
-    inc dx
+    add si, 1
     mov ax, cx ; restore
-    idiv bx ; ax = ax / bx
-    add ax, bx
-    ; idiv dx ; ax = ax / 2
-    shr ax, 1 ; -> ax = ax / 2
-    mov bx, ax
+    cwd
+    idiv bx ; ax = ax / bx = n / res
+    add ax, bx ; res + (n / res)
+    shr ax, 1 ; -> ax = ax / 2 = (res + (n / res)) / 2
+    mov bx, ax ; bx = res
     mov ax, cx ; restore ax = n
+    cwd
     idiv bx ; ax = ax / bx
-    cmp ax, dx
-    jg sqrt_loop
+    cmp ax, si
+    jg sqrt_loop ; ax > dx
     mov ax, bx ; ax = bx = res
 
 sqrt_skip:
+    pop si
     pop dx
     pop cx
     pop bx
     ret
 sqrt endp
 
-; ax - 'a' number
-; bx - 'b' number
-; dx - D
+; Input: ax - 'a' number
+; Input: bx - 'b' number
+; Input: dx - D
+; Output: ax - first root
+; Output: bx - second root
 calcRoots proc
+    cmp dx, 0
+    je calcRoots_skip
 
+    push ax
+    mov ax, dx
+    call sqrt
+    mov dx, ax
+    pop ax
+
+calcRoots_skip:
+    neg bx ; -b
+    push bx
+    push dx
+    ; first root
+    add ax, ax ; 2a = a + a
+    sub bx, dx ; b - sqrt(D)
+    mov cx, bx ; cx = - b - sqrt(D)
+    mov bx, ax ; bx = 2a
+    xor eax, eax
+    mov ax, cx ; ax = cx = - b - squrt(D)
+    cwd
+    push ax
+    mov al, 'C'
+    call println_text
+    pop ax
+    div bx    ; ax = (-b-sqrt(D)) / 2a
+    mov cx, bx ; cx = 2a
+    pop bx     ; restore -b
+    pop dx
+    push ax    ; Save first root in stack
+    ; Second root
+    mov ax, cx
+    add bx, dx ; - b + sqrt(D)
+    mov cx, bx ; cx = - b + sqrt(D)
+    mov bx, ax ; bx = 2a
+    mov ax, cx ; ax = cx = - b + squrt(D)
+    cwd
+    idiv bx    ; ax = (-b+sqrt(D)) / 2a
+    mov bx, ax ; Save second root in bx
+    pop ax     ; Restore first root from stack
     ret
 calcRoots endp
-
-; ax - first number
-; bx - second number
-_add proc
-    add ax, bx
-    call print_int
-    jmp continue
-_add endp
-
-; ax - first number
-; bx - second number
-_sub proc
-    sub ax, bx
-    call print_int
-    jmp continue
-_sub endp
-
-; ax - first number
-; bx - second number
-_mul proc
-    imul bx ; ax = ax * bx
-    call print_int
-    jmp continue
-_mul endp
-
-; ax - first number
-; bx - second number
-_div proc
-    cmp bx, 0
-    je _div_division_by_zero
-
-    cwd ; заполним DX знаковым битом из AX
-    idiv bx
-    call print_int
-
-    jmp continue
-_div_division_by_zero:
-    mov ax, offset msgDivisionbyZero
-    call println
-    jmp continue
-_div endp
 
 exit proc
     mov ax, 4C00h
