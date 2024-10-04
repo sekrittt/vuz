@@ -32,6 +32,11 @@ main proc
     int 10h
 
 main_loop:
+    pusha
+    xor ax, ax
+    xor bx, bx
+    xor cx, cx
+    xor dx, dx
     mov ax, offset msgANumber
     mov bx, offset aNumber
     call input
@@ -48,7 +53,9 @@ main_loop:
     call string_to_number ; result in ax
     cmp ax, 0
     je a_is_zero
+
     push ax
+
 
     mov si, offset bNumber + 2
     call string_to_number
@@ -56,14 +63,20 @@ main_loop:
     je b_is_zero
     mov bx, ax
 
+    push bx
+    xor ax, ax
+
     mov si, offset cNumber + 2
     call string_to_number
     cmp ax, 0
     je c_is_zero
+
     mov cx, ax
+    pop bx
     pop ax
 
     call calculate
+    jmp continue
 
 a_is_zero:
     xor ax, ax
@@ -88,11 +101,12 @@ continue:
     mov bx, offset continueQuestionAnswer
     call input
 
+    xor cx, cx
     mov cl, continueQuestionAnswer + 2
     cmp cx, "n"
     jne main_loop
 
-    pop dx ; restore dx
+    popa
     call exit
 main endp
 
@@ -102,24 +116,25 @@ main endp
 calculate proc
     push ax ; save ax in stack
     push bx ; save bx in stack
-    ; Squaring 'b' number
-    mov ax, bx ; ax = bx
-    imul bx ; ax = ax * bx ; may be ebx for 32 bit number
-    mov bx, ax ; bx = bx * bx ; previouse line
-    pop ax ; restore ax from stack
 
-    push dx ; save dx because I don't know what's in it
-    push ax
+    xor dx, dx
+    ; Squaring 'b' number
+    imul bx, bx ; bx = bx * bx ; may be ebx for 32 bit number
+
+
 
     mov dx, 4
-    imul dx ; ax -> 'a' number ; ax * 4 = a * 4
-    imul cx ; ax = a * 4 ; ax = a * 4 * cx ; cx -> c
 
-    ; Now ax = 4ac -> (4 * ax * cx)
+    imul dx, ax ; ax -> 'a' number ; ax * 4 = 4 * a
 
-    sub ax, bx ; b^2 - 4ac = D -> ax = D
-    mov dx, ax ; Now dx = ax = D
-    cmp ax, 0
+    imul dx, cx ; ax = a * 4 ; ax = a * 4 * cx ; cx -> c
+
+    ; Now dx = 4ac -> (4 * ax * cx)
+
+
+    sub bx, dx ; b^2 - 4ac = D -> ax = D
+    mov dx, bx ; Now dx = bx = D
+    cmp dx, 0
     je one_root ; D = 0
     jl zero_roots ; D < 0
     jg two_roots ; D > 0
@@ -204,35 +219,39 @@ calcRoots proc
     cmp dx, 0
     je calcRoots_skip
 
+
     push ax
     mov ax, dx
     call sqrt
     mov dx, ax
     pop ax
 
+
 calcRoots_skip:
     neg bx ; -b
     push bx
+
+
+
+
     push dx
     ; first root
     add ax, ax ; 2a = a + a
-    sub bx, dx ; b - sqrt(D)
+
+    sub bx, dx ; - b - sqrt(D)
     mov cx, bx ; cx = - b - sqrt(D)
     mov bx, ax ; bx = 2a
-    xor eax, eax
     mov ax, cx ; ax = cx = - b - squrt(D)
     cwd
-    push ax
-    mov al, 'C'
-    call println_text
-    pop ax
-    div bx    ; ax = (-b-sqrt(D)) / 2a
+    idiv bx    ; ax = (-b-sqrt(D)) / 2a
     mov cx, bx ; cx = 2a
-    pop bx     ; restore -b
+
     pop dx
+    pop bx     ; restore -b
     push ax    ; Save first root in stack
+
     ; Second root
-    mov ax, cx
+    mov ax, cx ; 2a
     add bx, dx ; - b + sqrt(D)
     mov cx, bx ; cx = - b + sqrt(D)
     mov bx, ax ; bx = 2a

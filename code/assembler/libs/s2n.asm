@@ -5,6 +5,7 @@
 string_to_number proc
 ; обрабатываем содержимое буфера
     ; mov si,offset buff+2 ; берем адрес начала строки
+    xor di, di
     cmp byte ptr [si],"-" ; если первый символ минус
     jnz ii1
     mov di,1  ; устанавливаем флаг

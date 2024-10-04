@@ -52,6 +52,7 @@ println_text endp
 
 ; ax - number
 print_int proc
+    pusha
    test    ax, ax
    jns     print_int_oi1
 
@@ -100,6 +101,6 @@ print_int_oi3:
     mov dl, 0Ah
     mov ah, 02h
     int 21h
-
+    popa
     ret
 print_int endp
