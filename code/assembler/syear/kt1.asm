@@ -25,28 +25,29 @@ start endp
 
 keyboard_handler proc
     pusha
+
+    xor ax, ax
+    in al, 60h
+    cmp al, 1ch
+    pop ax
+    jne skip
     push ax
-    ; xor ax, ax
-    ; in al, 60h
-    ; cmp al, 1ch
-    ; pop ax
-    ; jne skip
-    ; push ax
+    mov al, 20h
+    out 20h, al
+    xor ax, ax
+    ; mov al, "Y"
+    ; call println_text
+
+    popa
+    call exit
+
+
+skip:
+    popa
     ; mov al, 20h
     ; out 20h, al
-    xor ax, ax
-    mov al, "Y"
-    call println_text
-    pop ax
-    popa
     jmp cs:old_handler
     iret
-
-; skip:
-;     ; mov al, 20h
-;     ; out 20h, al
-;     jmp cs:old_handler
-;     iret
 keyboard_handler endp
 
 exit proc
