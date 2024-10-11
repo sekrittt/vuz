@@ -1,61 +1,73 @@
-.model small
-.386
+.model tiny
+.186
 .stack 100h
 
 .data
-    old_handler dd ? ; address of interrupt handler
-
+    old_handler dd ?
 
 .code
-include libs\io.asm
-start proc
-    ; IRQ1 or INT9 - keyboard
-    ; Save old handler
+start proc near
+    mov ax, @data
+    mov ds, ax
+
     mov ax, 3509h
     int 21h
-    mov word ptr old_handler, bx
-    mov word ptr old_handler+2, es
-    ; Setup custom handler
+    mov word ptr [old_handler], bx
+    mov word ptr [old_handler+2], es
+
+    push ds
     mov ax, 2509h
-    mov dx, seg keyboard_handler
+    mov dx, seg kbh
     mov ds, dx
-    mov dx, offset keyboard_handler
+    mov dx, offset kbh
     int 21h
+    pop ds
+    ; call exit
+p:
+    jmp p
 start endp
 
-keyboard_handler proc
-    pusha
-
-    xor ax, ax
+kbh proc far ; keyboard handler
     in al, 60h
-    cmp al, 1ch
-    pop ax
-    jne skip
-    push ax
+    cmp al, 1Ch
+    je kbh_exit
+
+    mov ah, 0Eh
+    mov al, 'S'
+    mov bh, 0
+    int 10h
+
     mov al, 20h
     out 20h, al
-    xor ax, ax
-    ; mov al, "Y"
-    ; call println_text
-
-    popa
-    call exit
-
-
-skip:
-    popa
-    ; mov al, 20h
-    ; out 20h, al
-    jmp cs:old_handler
     iret
-keyboard_handler endp
+kbh_exit:
+    mov ah, 0Eh
+    mov al, 'Y'
+    mov bh, 0
+    int 10h
+    mov ah, 0Eh
+    mov al, 'e'
+    mov bh, 0
+    int 10h
+    mov ah, 0Eh
+    mov al, 's'
+    mov bh, 0
+    int 10h
+    mov al, 20h
+    out 20h, al
+    call exit
+kbh endp
 
 exit proc
-    lds dx, old_handler
+    push ds
+    mov dx, word ptr [old_handler+2]
+    mov ds, dx
+    mov dx, word ptr [old_handler]
     mov ax, 2509h
     int 21h
-    mov ax, 4C00h
-    int 21h
+    pop ds
+    mov ax, 4C00h ; stop program
+    int 21h ; dos interrupt
 exit endp
 
 end start

@@ -23,6 +23,7 @@ drawWhiteLine proc
     jna drawWhiteLine
     ret
 drawWhiteLine endp
+
 drawRect proc
     push ax
     push bx

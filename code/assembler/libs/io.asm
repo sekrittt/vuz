@@ -37,7 +37,7 @@ println proc
 println endp
 
 ; al - text
-println_text proc
+println_text proc near
     mov dl, al
     mov ah, 02h
     int 21h
