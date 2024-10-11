@@ -38,10 +38,8 @@ start proc
     int 33h
     pop ds
 
-    ; mov ah, 0
-    ; int 16h
-p:
-    jmp p
+    mov ah, 0
+    int 16h
     call exit
 start endp
 

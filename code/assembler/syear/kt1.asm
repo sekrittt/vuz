@@ -7,29 +7,30 @@
 
 .code
 start proc near
-    mov ax, @data
-    mov ds, ax
+    mov ax, @data ; Load data section
+    mov ds, ax ;
 
     mov ax, 3509h
     int 21h
-    mov word ptr [old_handler], bx
-    mov word ptr [old_handler+2], es
+    mov word ptr [old_handler], bx   ; save old handler
+    mov word ptr [old_handler+2], es ; save segment address old handler
 
-    push ds
+    push ds ; Save data section
     mov ax, 2509h
     mov dx, seg kbh
     mov ds, dx
     mov dx, offset kbh
     int 21h
-    pop ds
-    ; call exit
-p:
+    pop ds ; restore data section
+
+
+p:  ; For don't close program
     jmp p
 start endp
 
 kbh proc far ; keyboard handler
-    in al, 60h
-    cmp al, 1Ch
+    in al, 60h ; Read data from port
+    cmp al, 1Ch ; If al == 1Ch (Enter key)
     je kbh_exit
 
     mov ah, 0Eh
@@ -59,11 +60,13 @@ kbh_exit:
 kbh endp
 
 exit proc
+    ; Restore old handler
     push ds
     lds dx, old_handler
     mov ax, 2509h
     int 21h
     pop ds
+    ;
     mov ax, 4C00h ; stop program
     int 21h ; dos interrupt
 exit endp
