@@ -60,9 +60,7 @@ kbh endp
 
 exit proc
     push ds
-    mov dx, word ptr [old_handler+2]
-    mov ds, dx
-    mov dx, word ptr [old_handler]
+    lds dx, old_handler
     mov ax, 2509h
     int 21h
     pop ds

@@ -56,8 +56,8 @@ mouse_handler proc far ; dx, cx - coords
     pop cx
     ;
 
-    add dx, 20
-    add cx, 20
+    add dx, 20 ;
+    add cx, 20 ;
 
     mov ax, cx ; start y
     mov bx, cx ; start y + height
