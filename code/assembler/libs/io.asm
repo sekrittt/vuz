@@ -20,11 +20,7 @@ input proc
     ret
 input endp
 
-; ax - address of text
-println proc
-    mov dx, ax
-    mov ah, 09h
-    int 21h
+print_newline proc
     ; new line
     mov dl, 0Dh
     mov ah, 02h
@@ -32,9 +28,27 @@ println proc
     mov dl, 0Ah
     mov ah, 02h
     int 21h
-    ;
+    ret
+print_newline endp
+
+; ax - address of text
+println proc
+    mov dx, ax
+    mov ah, 09h
+    int 21h
+    call print_newline
     ret
 println endp
+
+
+; ax - address of text
+print proc
+    mov dx, ax
+    mov ah, 09h
+    int 21h
+    ;
+    ret
+print endp
 
 ; al - text
 println_text proc near
@@ -95,12 +109,7 @@ print_int_oi3:
 ; Повторим ровно столько раз, сколько цифр насчитали.
     loop    print_int_oi3
 
-    mov dl, 0Dh
-    mov ah, 02h
-    int 21h
-    mov dl, 0Ah
-    mov ah, 02h
-    int 21h
+    call print_newline
     popa
     ret
 print_int endp
