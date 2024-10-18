@@ -3,22 +3,22 @@
 .stack 100h
 
 .data
-    common_msg db 'Квадратные уровнения', '$'
-    msgContinueQuestion db "Продолжить? (y/n): ", "$"
-    msgIncorectNumber db "Неправильное число!", "$"
+    common_msg db 'Square levels', '$'
+    msgContinueQuestion db "Continue? (y/n): ", "$"
+    msgIncorectNumber db "Incorrect number!", "$"
     operand1 db 254, 0, 254 dup("$")
     operand2 db 254, 0, 254 dup("$")
     operand3 db 254, 0, 254 dup("$")
     continueQuestionAnswer db 254, 0, 254 dup("$")
 
-    msg1 db 'Корней нет', '$'
+    msg1 db 'No roots', '$'
     msg2 db 'X1 = $'
     msg3 db 'X2 = $'
 
-    input_a db 'Операнд a = $' ; сообщение для ввода а
-    input_b db 'Операнд b = $' ; сообщение для ввода b
-    input_c db 'Операнд c = $' ; сообщение для вводa c
-    input_r db 'Результат: $' ;
+    input_a db 'Operand a = $' ; сообщение для ввода а
+    input_b db 'Operand b = $' ; сообщение для ввода b
+    input_c db 'Operand c = $' ; сообщение для вводa c
+    input_r db 'Result: $' ;
 
     a dd ?
     b dd ?
