@@ -19,9 +19,9 @@
     operator db 254, 0, 254 dup("$")
     continueQuestionAnswer db 254, 0, 254 dup("$")
 
-    firstOperand dd ?
-    secondOperand dd ?
-    result dd ?
+    firstOperand dq ?
+    secondOperand dq ?
+    result dq ?
 
     ten equ word ptr [bp-2] ; какой-то регистр для вывода      ; for fpu-io lib
     temp equ word ptr [bp-4] ; еще какой-то регистр для вывода ; for fpu-io lib
@@ -99,24 +99,24 @@ main endp
 
 
 _add proc
-    fld [firstOperand]
     fld [secondOperand]
+    fld [firstOperand]
     fadd st(0), st(1)
     call print_float
     jmp continue
 _add endp
 
 _sub proc
-    fld [firstOperand]
     fld [secondOperand]
+    fld [firstOperand]
     fsub st(0), st(1)
     call print_float
     jmp continue
 _sub endp
 
 _mul proc
-    fld [firstOperand]
     fld [secondOperand]
+    fld [firstOperand]
     fmul st(0), st(1)
     call print_float
     jmp continue
@@ -124,18 +124,26 @@ _mul endp
 
 
 _div proc
-    cmp secondOperand, 0
+    ; Check if second operand is zero
+    push ax
+    fld [secondOperand]
+    ftst
+    fstsw ax
+    sahf
+    sete al
+    cmp al, 1
     je _div_division_by_zero
+    pop ax
 
     fld [firstOperand]
-    fld [secondOperand]
     fdiv st(0), st(1)
     call print_float
 
     jmp continue
 _div_division_by_zero:
+    pop ax
     mov ax, offset msgDivisionbyZero
-    call println
+    call print
     jmp continue
 _div endp
 
