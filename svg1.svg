@@ -1,4 +1,5 @@
-<svg width="300" height="150" xmlns="http://www.w3.org/2000/svg">
+<svg width="300" height="150" xmlns="http://www.w3.org/2000/svg"
+  sandbox="allow-popups allow-forms allow-pointer-lock allow-orientation-lock allow-same-origin allow-scripts">
   <!-- SVG elements -->
   
   <script type="text/ecmascript">
