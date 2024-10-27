@@ -1,5 +1,5 @@
-<meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline'">
 <svg width="300" height="150">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline'">
   <!-- SVG elements -->
   
   <script type="text/ecmascript">
