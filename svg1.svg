@@ -1,4 +1,4 @@
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src https://*; child-src 'none';">
+<meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline'">
 <svg width="300" height="150">
   <!-- SVG elements -->
   
