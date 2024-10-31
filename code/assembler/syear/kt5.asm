@@ -31,7 +31,6 @@
     nStr db 254, 0, 254 dup("$")
     xStr db 254, 0, 254 dup("$")
     continueQuestionAnswer db 254, 0, 254 dup("$")
-    controlReg dw ?
 
 .code
 

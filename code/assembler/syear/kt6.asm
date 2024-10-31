@@ -1,35 +1,31 @@
 .model tiny
 .386
 .stack 100h
+
 .data
-    errormes db 'Error','$'
-    z dd 0
-    n dd 0
-    outp dd 3.0
-    i dd 1.0
-    chisl dd 3
-    znam  dd 1.0
-    tmp dd 1.0
-    pep dd 1.0
-    minus dd 1.0
-    koeff1 dd 3.0
-    koeff2 dd 1.0
-    ten equ word ptr [bp-2]
-    temp equ word ptr [bp-4]
-    message1 db "Ряд Лорана для 1/(z^2-1)^2 в окружности 0<|z-1|<2 ", '$'
-    message2 db "Введите n: ", '$'
-    message3 db "Введите z: ", '$'
-    message4 db "Ряд: 1/4*(1/(", '$'
-    message5 db "-1)^2-1/(", '$'
-    message6 db "-1)+1/4*(3", '$'
-    message7 db " + ", '$'
-    message8 db "/", '$'
-    message9 db "  ", '$'
-    message10 db ")) = ", '$'
+    msgError db 'Ошибка','$'
+
+
+    welcomeMsg db "Ряд Лорана от ln(1+z)", '$' ; R = 1
+    enterKMsg db "Введите K = ", '$'
+    enterZMsg db "Веедите Z = ", '$'
+    message4 db "Ряд: ", '$'
+    message5 db " + ", '$'
+    message7 db " = ", '$'
     msgContinueQuestion db "Продолжить? (Y/N) ", '$'
     msgIncorectNumber db "Неправильное число!", "$"
 
-    nStr db 254, 0, 254 dup("$")
+    z dt 0
+    z1 dt 0
+    k dt 0
+    i dt 1.0
+    result dt 0
+    minusOne dt -1.0
+    lastSign dt -1.0
+    tmp dt 0
+    ten equ word ptr [bp-2] ; какой-то регистр для вывода
+    temp equ word ptr [bp-4] ; еще какой-то регистр для вывода
+    kStr db 254, 0, 254 dup("$")
     zStr db 254, 0, 254 dup("$")
     continueQuestionAnswer db 254, 0, 254 dup("$")
 
@@ -37,125 +33,54 @@
 include libs\io.asm
 include libs\fpu\io.asm
 include libs\fpu\s2f.asm
-clearscreen proc
-   mov ax, 0003h
-   int 10h
-   ret
-clearscreen endp
+clearScrean proc
+    mov ax, 0003h
+    int 10h
+    ret
+clearScrean endp
 main proc
-
     mov ax, @data
     mov ds, ax
 
+    finit
 main_loop:
-    call clearscreen
+    call clearScrean
 
-    mov ax, offset message1
+    mov ax, offset welcomeMsg
     call println
-    mov ax, offset message2
-    mov bx, offset nStr
+
+    mov ax, offset enterKMsg
+    mov bx, offset kStr
     call input
 
-    mov si, offset nStr + 2
+    mov si, offset kStr + 2
     call string_to_float
-    fst n
+    fstp k
 
-    mov ax, offset message3
+    mov ax, offset enterZMsg
     mov bx, offset zStr
     call input
 
     mov si, offset zStr + 2
     call string_to_float
-    fst z
+    fstp z
+    fld z
+    fstp z1
 
+    call loran
 
-    mov ax, offset message4
+    mov ax, offset message7
     call print
 
-
-    fld z
-    call print_float
-
-
-    mov ax, offset message5
-    call print
-
-
-    fld z
-    call print_float
-
-    mov ax, offset message6
-    call print
-
-    fld1
-    fld z
-    fsub
-    fst koeff2
-
-    fld minus
-    fldz
-    fsub
-    fst minus
-    call Laurent
-
-    fld1
-    fld1
-    fadd
-    fld1
-    fadd
-    fld1
-    fadd
-    fld outp
-    fdiv st(0), st(1)
-    fst outp
-
-    fld1
-    fld z
-    fsub
-    fld minus
-    fdiv st(0), st(1)
-    fld outp
-    fadd
-    fst outp
-
-    fld1
-    fld z
-    fsub
-    fst tmp
-
-    fld tmp
-    fld tmp
-    fmul
-    fst tmp
-
-    fld tmp
-    fld1
-    fdiv st(0), st(1)
-    fld outp
-    fadd
-    fst outp
-
-    fld1
-    fld1
-    fadd
-    fld1
-    fadd
-    fld1
-    fadd
-    fld outp
-    fdiv st(0), st(1)
-    fst outp
-
-    mov ax, offset message10
-    call print
-
-    fld outp
+    fld result
     call print_float
 
     call print_newline
+
     mov ax, offset msgContinueQuestion
     mov bx, offset continueQuestionAnswer
     call input
+
     mov cl, continueQuestionAnswer + 2
     cmp cx, "n"
     je main_exit
@@ -164,85 +89,88 @@ main_loop:
     jmp main_loop
 
 main_exit:
-       mov ax,4c00h
-        int 21h
+    call exit
 main endp
 
-Laurent proc
-    Laurentcicle:
-        mov ax, offset message7
-        call print
+loran proc
+    push ax
+    ; Setup Defaults
+    fld1
+    fstp lastSign
+    fld1
+    fstp i
+    fld z
+    fstp result
+    ; Print current element
+    fld result
+    call print_float
+    mov ax, offset message5
+    call print
+    ; Next x*x
+    fld z
+    fld z1
+    fmul st(0), st(1)
+    fstp z
 
-        fld pep
-        fld minus
-        fmul
-        fld koeff2
-        fmul
-        fst pep
+loran_loop:
+    ; Calculate new sign
+    fld minusOne
+    fld lastSign
+    fmul st(0), st(1)
+    fstp lastSign
 
-        fld1
-        fld koeff1
-        fadd
-        fst koeff1
+    ; Increment i
+    fld i
+    fld1
+    fadd st(0), st(1)
+    fstp i
 
-        fld pep
-        fld koeff1
-        fmul
-        fst chisl
+    ; Div z/i
+    fld i
+    fld z
+    fdiv st(0), st(1)
+    fstp tmp
 
-        fld chisl
-        call print_float
+    ; Mul for setup sign
+    fld lastSign
+    fld tmp
+    fmul st(0), st(1)
+    fstp tmp
 
+    ; Print current element
+    fld tmp
+    call print_float
 
+    ; Calculate new result
+    fld result
+    fld tmp
+    fadd st(0), st(1)
+    fstp result
 
-        mov ax, offset message8
-        call print
+    ; Next x*x
+    fld z
+    fld z1
+    fmul st(0), st(1)
+    fstp z
 
-        fld1
-        fld1
-        fadd
-        fld znam
-        fmul
-        fst znam
+    fld i
+    fld k
+    fcom
+    fstsw ax
+    sahf
+    je loran_end
+    jb loran_end
+    mov ax, offset message5
+    call print
+    jmp loran_loop
 
-        fld znam
-        call print_float
-
-        fld znam
-        fld chisl
-
-
-        fdiv st(0), st(1)
-        fst tmp
-
-        fld tmp
-
-
-
-        fld outp
-        fadd st(0), st(1)
-        fst outp
-
-
-
-        fld i
-        fcom n
-        fstsw ax
-        sahf
-        jb Laurentinc
-        ret
-    Laurentinc:
-
-        fld i
-        fld1
-        fadd
-        fst i
-        jmp Laurentcicle
+loran_end:
+    pop ax
     ret
-Laurent endp
+loran endp
 
 exit proc
-    mov ax,4c00h
+    mov ax, 4C00h
     int 21h
 exit endp
 
