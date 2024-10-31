@@ -6,7 +6,7 @@
     msgError db 'Ошибка','$'
 
 
-    welcomeMsg db "Ряд Лорана от ln(1+z)", '$' ; R = 1
+    welcomeMsg db "Ряд Лорана от sin(z)/z^2", '$' ; R = 1
     enterKMsg db "Введите K = ", '$'
     enterZMsg db "Веедите Z = ", '$'
     message4 db "Ряд: ", '$'
@@ -19,9 +19,10 @@
     z1 dt 0
     k dt 0
     i dt 1.0
+    i1 dt 1.0
+    c dt 1.0
     result dt 0
-    minusOne dt -1.0
-    lastSign dt -1.0
+    sign dt 1.0
     tmp dt 0
     ten equ word ptr [bp-2] ; какой-то регистр для вывода
     temp equ word ptr [bp-4] ; еще какой-то регистр для вывода
@@ -96,64 +97,81 @@ loran proc
     push ax
     ; Setup Defaults
     fld1
-    fstp lastSign
+    fstp sign
     fld1
     fstp i
     fld z
+    fld1
+    fdiv st(0), st(1)
     fstp result
-    ; Print current element
     fld result
     call print_float
     mov ax, offset message5
     call print
-    ; Next x*x
-    fld z
-    fld z1
-    fmul st(0), st(1)
-    fstp z
-
 loran_loop:
-    ; Calculate new sign
-    fld minusOne
-    fld lastSign
-    fmul st(0), st(1)
-    fstp lastSign
 
-    ; Increment i
-    fld i
+    ; Calculate sign
+    fld sign
+    fchs
+    fstp sign
+
+    ; Calculate factorial
     fld1
+    fld i1
     fadd st(0), st(1)
+    fstp i1
+
+    fld i1
+    fld i
+    fmul st(0), st(1)
     fstp i
 
-    ; Div z/i
+    fld1
+    fld i1
+    fadd st(0), st(1)
+    fstp i1
+
+    fld i1
+    fld i
+    fmul st(0), st(1)
+    fstp i
+
+    ; Divide z/i
     fld i
     fld z
     fdiv st(0), st(1)
     fstp tmp
 
-    ; Mul for setup sign
-    fld lastSign
+    fld sign
     fld tmp
     fmul st(0), st(1)
     fstp tmp
 
-    ; Print current element
     fld tmp
     call print_float
 
-    ; Calculate new result
     fld result
     fld tmp
     fadd st(0), st(1)
     fstp result
 
-    ; Next x*x
+    ; Calculate step
     fld z
     fld z1
     fmul st(0), st(1)
     fstp z
 
-    fld i
+    fld z
+    fld z1
+    fmul st(0), st(1)
+    fstp z
+
+    fld c
+    fld1
+    fadd st(0), st(1)
+    fstp c
+
+    fld c
     fld k
     fcom
     fstsw ax

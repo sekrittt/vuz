@@ -17,7 +17,7 @@
     ten equ word ptr [bp-2] ; какой-то регистр для вывода
     temp equ word ptr [bp-4] ; еще какой-то регистр для вывода
 
-    welcomeMsg db "Ряд Тейлора от ln(1+x)", '$'
+    welcomeMsg db "Ряд Тейлора от ln(1+x). -1 < x <= 1", '$'
     enterNMsg db "Введите N = ", '$'
     enterXMsg db "Веедите X = ", '$'
     message4 db "Ряд: ", '$'
