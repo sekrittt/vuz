@@ -18,6 +18,7 @@
     z dt 0
     z1 dt 0
     k dt 0
+
     i dt 1.0
     i1 dt 1.0
     c dt 1.0
@@ -98,12 +99,21 @@ loran proc
     ; Setup Defaults
     fld1
     fstp sign
+
     fld1
     fstp i
+    fld1
+    fstp i1
+
+    fld1
+    fstp c
+
     fld z
     fld1
     fdiv st(0), st(1)
     fstp result
+
+    ; Print fisrt element
     fld result
     call print_float
     mov ax, offset message5
