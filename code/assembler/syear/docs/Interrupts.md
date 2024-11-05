@@ -1,75 +1,20 @@
 # Прерывания
 ## Клавиатура
-1. Устанавливаем модель памяти, как правило ```tiny``` достаточно
+1. Устанавливаем модель памяти, как правило ```tiny``` достаточно.
     ```assembly
     .model tiny
     ```
-2. Выделяем 100 байт стека
+2. Выделяем 100 байт стека.
     ```assembly
     .stack 100h
     ```
-3. Определяем секцию данных и переменную ```old_handler``` для хранения адреса старого обработчика
+3. Определяем секцию данных и переменную ```old_handler``` для хранения адреса старого обработчика.
     ```assembly
     .data
         old_handler dd ?
     ```
-4. Основной код
-    ```assembly
-    .code
-    start proc near
-        mov ax, @data
-        mov ds, ax
-
-        mov ax, 3509h
-        int 21h
-        mov word ptr [old_handler], bx   ; save old handler
-        mov word ptr [old_handler+2], es ; save segment address old handler
-
-        push ds ; Save data section
-        mov ax, 2509h
-        mov dx, seg kbh
-        mov ds, dx
-        mov dx, offset kbh
-        int 21h
-        pop ds ; restore data section
-
-
-    p:
-        jmp p
-    start endp
-
-    kbh proc far ; keyboard handler
-        in al, 60h ; Read data from port
-        cmp al, 1Ch ; If al == 1Ch (Enter key)
-        je kbh_exit
-
-        ; ... Делаем что-то
-
-        mov al, 20h
-        out 20h, al
-        iret
-    kbh_exit:
-        ; ... Делаем что-то
-        mov al, 20h
-        out 20h, al
-        call exit
-    kbh endp
-
-    exit proc
-        ; Restore old handler
-        push ds
-        lds dx, old_handler
-        mov ax, 2509h
-        int 21h
-        pop ds
-        ;
-        mov ax, 4C00h ; stop program
-        int 21h ; dos interrupt
-    exit endp
-
-    end start
-    ```
-    - Загрузка секции данных в регистр ds
+4. Решение:
+    - Загрузка секции данных в регистр ds.
         ```assembly
         mov ax, @data
         mov ds, ax
@@ -126,4 +71,72 @@
             ```assembly
             in al, 60h
             ```
-            Используется именно чтение из порта, потому что мы реализуем свой обработчик и по правильному мы не должны использовать прерывания по крайней мере не использовать их слишком много. В ```al``` будет результат скан-код клавиши. 
+            Используется именно чтение из порта, потому что мы реализуем свой обработчик и по правильному мы не должны использовать прерывания по крайней мере не использовать их слишком много. В ```al``` будет результат скан-код клавиши. Скан-коды есть [здесь](https://github.com/sekrittt/vuz/blob/main/code/assembler/syear/docs/Keyboard.md) и [здесь](https://ru.wikipedia.org/wiki/Скан-код)
+        - Я пропущу сравнение, оно понятное)
+        - Подтверждаем, что прерывание было обработано и сбрасываем контроллеры.
+            ```assembly
+            mov al, 20h
+            out 20h, al
+            ```
+    - Выход и восстановление обработчика событий.
+        ```assembly
+        exit proc
+        push ds
+        lds dx, old_handler
+        mov ax, 2509h
+        int 21h
+        pop ds
+        mov ax, 4C00h
+        int 21h
+        exit endp
+        ```
+        Снова сохраняем регистр ds на всякий случай. Командой ```lds``` помещаем адрес и сегментный адрес старого обработчика в dx и ds соответственно. Функцией 25 устанавливаем уже старый обработчик событий для прерывания, 09 это снова код прерывания. И выходим из программы 4C DOS-функция выхода, 00 - код завершения программы.
+
+Исходный код решения находится [тут](https://github.com/sekrittt/vuz/blob/main/code/assembler/syear/kt1.asm).
+
+## Мышь
+1. Устанавливаем модель памяти, как правило ```tiny``` достаточно.
+    ```assembly
+    .model tiny
+    ```
+2. Выделяем 100 байт стека.
+    ```assembly
+    .stack 100h
+    ```
+3. Решение, здесь секция данных не обязательна.
+    - Инициализация мыши в DOSBox.
+    ```assembly
+    mov ax, 0000h
+    int 33h
+    ```
+    - Показ мыши.
+    ```assembly
+    mov ax, 0001h
+    int 33h
+    ```
+    - Или скрытие, в зависимости от того, что вам нужно.
+    ```assembly
+    mov ax, 0002h
+    int 33h
+    ```
+    - Установка позиции мыши на экране.
+    ```assembly
+    mov ax, 0004h
+    mov cx, 0
+    mov dx, 0
+    int 33h
+    ```
+    ```cx``` и ```dx``` координаты.
+    - Устанавливаем свой обработчик событий.
+    ```assembly
+    mov ax, 000Ch
+    mov cx, 00000001b
+    push cs
+    pop es
+    mov dx, offset mouse_handler
+    int 33h
+    ```
+    000Ch - DOS-функция для установки нового обработчика мыши. В ```cx``` мы кладём условие вызова, в учебнике [Зубкова]() расписано какой бит за что отвечает) В ```dx``` мы помещаем адрес нашего обработчика
+    - Наш обработчик:
+        - В регистрах ```dx``` и ```cx``` у нас лежат координаты мыши. ```cx``` - Y координата, а ```dx``` - X координата
+        - В регистре ```ax``` находится условие вызова
