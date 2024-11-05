@@ -1,5 +1,4 @@
 .model tiny
-.186
 .stack 100h
 
 .data
