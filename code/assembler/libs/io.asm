@@ -1,3 +1,13 @@
+print_newline proc
+    ; new line
+    mov dl, 0Dh
+    mov ah, 02h
+    int 21h
+    mov dl, 0Ah
+    mov ah, 02h
+    int 21h
+    ret
+print_newline endp
 ; ax - placeholder
 ; bx - buffer
 input proc
@@ -10,26 +20,10 @@ input proc
     mov dx, bx
     int 21h
 
-    mov dl, 0Dh
-    mov ah, 02h
-    int 21h
-    mov dl, 0Ah
-    mov ah, 02h
-    int 21h
+    call print_newline
 
     ret
 input endp
-
-print_newline proc
-    ; new line
-    mov dl, 0Dh
-    mov ah, 02h
-    int 21h
-    mov dl, 0Ah
-    mov ah, 02h
-    int 21h
-    ret
-print_newline endp
 
 ; ax - address of text
 println proc
@@ -55,12 +49,7 @@ println_text proc near
     mov dl, al
     mov ah, 02h
     int 21h
-    mov dl, 0Dh
-    mov ah, 02h
-    int 21h
-    mov dl, 0Ah
-    mov ah, 02h
-    int 21h
+    call print_newline
     ret
 println_text endp
 

@@ -3,7 +3,7 @@
 
 .data
     ; название
-    fileName db "text.txt", 0                               ; название файла
+    fileName db "./fyear/text.txt", 0                               ; название файла
 
     ; сообщения
     msgSuccessFileCreate db "Success file create!", "$"     ; сообщение об успешном создании файла
