@@ -12,9 +12,7 @@ print_newline endp
 ; bx - buffer
 input proc
 
-    mov dx, ax
-    mov ah, 09h
-    int 21h
+    call print
 
     mov ah, 0Ah
     mov dx, bx

@@ -4,6 +4,10 @@
 <th colspan="3">Основная клавиатура
 </th></tr>
 <tr>
+<th><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r138812220">Клавиша</th>
+<th>Код нажатия</th>
+<th>Код отпускания</th></tr>
+<tr>
 <th><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r138812220"><kbd class="ts-key">A</kbd></th>
 <th>1E</th>
 <th>9E</th></tr>

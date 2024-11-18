@@ -9,6 +9,8 @@
     msgAccessDenied db "Доступ запрещён!", "$"                ; сообщение, что доступ запрещён
     msgInvalidAccessMode db "Неверный режим доступа!", "$"     ; сообщение, что неверный режим доступа
     msgInvalidFileId db "Неверные идентификатор файла!", "$"  ; сообщение, что неверный идентификатор файла
+    msgPleaseEnterWord db "Пожалуйста введите слово для перевода: ", "$"
+    msgNotFoundTranslation db "Нет такого слова в словаре!", "$"
     dictFileName db "./syear/dict.txt", 0
     fileId dw ?
     fileSize dw 0
@@ -18,6 +20,8 @@
     splitedLine1 db 254, 0, 254 dup("$")
     splitedLine2 db 254, 0, 254 dup("$")
     inputWord db 254, 0, 254 dup("$")
+    exitInput1 db "exit", "$"
+    exitInput2 db "выход", "$"
 
 .code
 include libs/io.asm
@@ -96,16 +100,73 @@ start proc
 
         mov fileId, ax
 
-        ; call getLine
+    wait_word_loop:
+        mov cx, 0
+        mov lineLength, cx
+        mov lineStartPos, cx
 
-        ; mov al, "="
-        ; call splitLine
 
-        ; mov ax, offset splitedLine1
-        ; call println
+        mov ax, offset msgPleaseEnterWord
+        mov bx, offset inputWord
+        call input
 
-        ; mov ax, offset splitedLine2
-        ; call println
+    finding_loop:
+        call getLine
+
+        mov ax, lineLength
+        cmp ax, -1
+        je finding_loop_not_found
+
+        mov al, "="
+        call splitLine
+
+        mov si, offset inputWord
+        call removeTwoEndBytes
+
+        mov ax, offset exitInput1
+        mov bx, offset inputWord + 2
+        call cmpLines
+        cmp cx, 1
+        je start_loop_exit
+
+        mov ax, offset exitInput2
+        mov bx, offset inputWord + 2
+        call cmpLines
+        cmp cx, 1
+        je start_loop_exit
+
+        mov ax, offset splitedLine1
+        mov bx, offset inputWord + 2
+        call cmpLines
+        cmp cx, 1
+        je finding_loop_end_1
+
+        mov ax, offset splitedLine2
+        mov bx, offset inputWord + 2
+        call cmpLines
+        cmp cx, 1
+        je finding_loop_end_2
+
+        jmp finding_loop
+
+    finding_loop_end_1:
+
+        mov ax, offset splitedLine2
+        call println
+        jmp wait_word_loop
+
+    finding_loop_end_2:
+
+        mov ax, offset splitedLine1
+        call println
+        jmp wait_word_loop
+
+    finding_loop_not_found:
+        mov ax, offset msgNotFoundTranslation
+        call println
+        jmp wait_word_loop
+
+    start_loop_exit:
 
         call exit
 start endp
@@ -191,8 +252,9 @@ getLine proc
         jmp getLine_exit
 
     getLine_error:
-        mov cx, 0
+        mov cx, -1
         mov lineLength, cx
+        mov cx, 0
         mov lineStartPos, cx
         mov ah, 42h
         mov bx, fileId
@@ -250,6 +312,55 @@ splitLine proc
         pop si
         ret
 splitLine endp
+
+
+; si - offest buffer
+removeTwoEndBytes proc
+    push ax
+    push cx
+    mov ch, 0
+    mov cl, byte ptr [si + 1] ; Line Length
+    add si, cx ; Add to address of buffer line lenght
+
+    mov byte ptr [si + 2], '$' ; 0Dh byte
+    mov byte ptr [si + 3], '$' ; 0Ah byte
+
+    pop cx
+    pop ax
+    ret
+removeTwoEndBytes endp
+
+; ax - first line offset
+; bx - second line offset
+; cx - result 1 or 0
+cmpLines proc
+    push dx
+    push si
+    mov cx, 1
+    cmpLines_loop:
+        mov si, ax
+        mov dl, [si]
+        inc ax
+
+        mov si, bx
+        mov dh, [si]
+        inc bx
+        cmp dl, '$'
+        je cmpLines_stop
+        cmp dh, '$'
+        je cmpLines_stop
+        cmp dl, dh
+        je cmpLines_loop
+    cmpLines_stop:
+
+        cmp dl, dh
+        je cmpLines_skip
+        mov cx, 0
+    cmpLines_skip:
+        pop si
+        pop dx
+        ret
+cmpLines endp
 
 exit proc
     ; Make it resident
