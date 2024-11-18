@@ -110,16 +110,6 @@ start proc
         mov bx, offset inputWord
         call input
 
-    finding_loop:
-        call getLine
-
-        mov ax, lineLength
-        cmp ax, -1
-        je finding_loop_not_found
-
-        mov al, "="
-        call splitLine
-
         mov si, offset inputWord
         call removeTwoEndBytes
 
@@ -134,6 +124,23 @@ start proc
         call cmpLines
         cmp cx, 1
         je start_loop_exit
+
+    finding_loop:
+        call getLine
+
+        ; mov ax, lineLength
+        ; call print_int
+        ; mov ax, offset lineBuffer
+        ; call println
+
+        mov ax, lineLength
+        cmp ax, -1
+        je finding_loop_not_found
+        cmp ax, 0
+        je finding_loop_not_found
+
+        mov al, "="
+        call splitLine
 
         mov ax, offset splitedLine1
         mov bx, offset inputWord + 2
@@ -210,8 +217,6 @@ getLine proc
         mov cx, lineLength
         inc cx
         mov lineLength, cx
-        cmp cx, 254
-        je getLine_error
         mov ah, 3Fh
         mov bx, fileId
         mov cx, 01h
@@ -219,12 +224,16 @@ getLine proc
         int 21h
         jc file_error_handler
 
+        cmp ax, 0
+        je getLine_stop
+
         mov si, offset lineBuffer
         mov al, byte ptr [si]
-        cmp al, 0Dh ; End of line, if don't work replace to 0Ah
+        cmp al, 0Ah ; End of line, if don't work replace to 0Ah
         jne getLine_loop
 
     getLine_stop:
+        push ax
         mov ah, 42h
         mov bx, fileId
         mov dx, lineStartPos
@@ -235,11 +244,18 @@ getLine proc
         mov cx, lineLength
         mov bx, lineStartPos
         add cx, bx
-        inc cx
         mov lineStartPos, cx
         xor bx, bx
 
+        pop ax
         mov cx, lineLength
+
+        cmp ax, 0
+        je ___skip
+        cmp cx, 2
+        je ___skip
+        dec cx
+    ___skip:
         dec cx
         mov lineLength, cx
 
