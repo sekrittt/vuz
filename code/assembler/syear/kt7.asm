@@ -13,7 +13,7 @@
     msgNotFoundTranslation db "Нет такого слова в словаре!", "$"
     dictFileName db "./syear/dict.txt", 0
     fileId dw ?
-    fileSize dw 0
+    isFileEnd dw 0
     lineBuffer db 254, 0, 254 dup("$")
     lineLength dw 0
     lineStartPos dw 0
@@ -104,6 +104,7 @@ start proc
         mov cx, 0
         mov lineLength, cx
         mov lineStartPos, cx
+        mov isFileEnd, cx
 
 
         mov ax, offset msgPleaseEnterWord
@@ -128,16 +129,12 @@ start proc
     finding_loop:
         call getLine
 
-        ; mov ax, lineLength
-        ; call print_int
-        ; mov ax, offset lineBuffer
-        ; call println
-
+        mov bx, isFileEnd
         mov ax, lineLength
-        cmp ax, -1
+        add ax, bx
+        cmp ax, 1
         je finding_loop_not_found
-        cmp ax, 0
-        je finding_loop_not_found
+        jb finding_loop
 
         mov al, "="
         call splitLine
@@ -228,12 +225,17 @@ getLine proc
         je getLine_stop
 
         mov si, offset lineBuffer
-        mov al, byte ptr [si]
-        cmp al, 0Ah ; End of line, if don't work replace to 0Ah
+        mov bl, byte ptr [si]
+        cmp bl, 0Ah ; End of line, if don't work replace to 0Ah
         jne getLine_loop
 
     getLine_stop:
-        push ax
+
+        mov bx, 1
+        sub ax, bx ; ax = ax - bx
+        neg ax
+        mov isFileEnd, ax
+
         mov ah, 42h
         mov bx, fileId
         mov dx, lineStartPos
@@ -247,17 +249,14 @@ getLine proc
         mov lineStartPos, cx
         xor bx, bx
 
-        pop ax
         mov cx, lineLength
-
-        cmp ax, 0
-        je ___skip
-        cmp cx, 2
-        je ___skip
+        mov ax, isFileEnd
         dec cx
-    ___skip:
         dec cx
+        add cx, ax
         mov lineLength, cx
+        cmp cx, 0
+        je getLine_exit
 
         mov ah, 3Fh
         mov bx, fileId
@@ -266,20 +265,6 @@ getLine proc
         int 21h
         jc file_error_handler
         jmp getLine_exit
-
-    getLine_error:
-        mov cx, -1
-        mov lineLength, cx
-        mov cx, 0
-        mov lineStartPos, cx
-        mov ah, 42h
-        mov bx, fileId
-        mov dx, 0
-        mov cx, 0
-        mov al, 0
-        int 21h
-        mov si, offset lineBuffer
-        call clearBuffer
 
     getLine_exit:
         pop si
