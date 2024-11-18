@@ -28,6 +28,7 @@ p:  ; For don't close program
 start endp
 
 kbh proc far ; keyboard handler
+    pushf
     in al, 60h ; Read data from port
     cmp al, 1Ch ; If al == 1Ch (Enter key)
     je kbh_exit

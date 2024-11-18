@@ -1,6 +1,6 @@
-cat=кот.
-dog=собака.
-milk=молоко.
-ground=земля.
-number=число.
-tea=чай.
+cat=кот
+dog=собака
+milk=молоко
+ground=земля
+number=число
+tea=чай
