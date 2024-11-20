@@ -9,7 +9,9 @@
     msgAccessDenied db "Доступ запрещён!", "$"                ; сообщение, что доступ запрещён
     msgInvalidAccessMode db "Неверный режим доступа!", "$"     ; сообщение, что неверный режим доступа
     msgInvalidFileId db "Неверные идентификатор файла!", "$"  ; сообщение, что неверный идентификатор файла
-    msgPleaseEnterWord db "Пожалуйста введите слово для перевода: ", "$"
+    msgPleaseEnterWord db "Пожалуйста, введите слово для перевода", "$"
+    msgPleaseEnterWordPlaceholder db ">>> ", "$"
+    msgWordTranslation db "Перевод: ", "$"
     msgNotFoundTranslation db "Нет такого слова в словаре!", "$"
     dictFileName db "./syear/dict.txt", 0
     fileId dw ?
@@ -22,6 +24,8 @@
     inputWord db 254, 0, 254 dup("$")
     exitInput1 db "exit", "$"
     exitInput2 db "выход", "$"
+    clearInput1 db "clear", "$"
+    clearInput2 db "очистить", "$"
 
 .code
 include libs/io.asm
@@ -89,7 +93,6 @@ start proc
         mov ds, ax
 
     start_loop:
-        call clearScreen
         ; Open dict file
         mov ah, 3Dh
         mov al, 00000000b
@@ -100,6 +103,11 @@ start proc
 
         mov fileId, ax
 
+    clear_screen:
+        call clearScreen
+        mov ax, offset msgPleaseEnterWord
+        call println
+
     wait_word_loop:
         mov cx, 0
         mov lineLength, cx
@@ -107,9 +115,13 @@ start proc
         mov isFileEnd, cx
 
 
-        mov ax, offset msgPleaseEnterWord
+        mov ax, offset msgPleaseEnterWordPlaceholder
         mov bx, offset inputWord
         call input
+
+        mov al, byte ptr [inputWord + 1]
+        cmp al, 0
+        je wait_word_loop
 
         mov si, offset inputWord
         call removeTwoEndBytes
@@ -125,6 +137,18 @@ start proc
         call cmpLines
         cmp cx, 1
         je start_loop_exit
+
+        mov ax, offset clearInput1
+        mov bx, offset inputWord + 2
+        call cmpLines
+        cmp cx, 1
+        je clear_screen
+
+        mov ax, offset clearInput2
+        mov bx, offset inputWord + 2
+        call cmpLines
+        cmp cx, 1
+        je clear_screen
 
     finding_loop:
         call getLine
@@ -154,13 +178,15 @@ start proc
         jmp finding_loop
 
     finding_loop_end_1:
-
+        ; mov ax, offset msgWordTranslation
+        ; call print
         mov ax, offset splitedLine2
         call println
         jmp wait_word_loop
 
     finding_loop_end_2:
-
+        ; mov ax, offset msgWordTranslation
+        ; call print
         mov ax, offset splitedLine1
         call println
         jmp wait_word_loop
