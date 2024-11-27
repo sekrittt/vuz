@@ -3,16 +3,16 @@
 .stack 100h
 
 .data
-    msgNotFoundPath db "я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜!", "$"               ; сооя┐╜щеня┐╜я┐╜, я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜
-    msgNotFoundFile db "я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜!", "$"               ; сооя┐╜щеня┐╜я┐╜, я┐╜я┐╜ файя┐╜ я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜
-    msgToManyFilesOpened db "я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜ файя┐╜я┐╜я┐╜!", "$"   ; сооя┐╜щеня┐╜я┐╜, я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜ слишкоя┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜ файя┐╜я┐╜я┐╜
-    msgAccessDenied db "я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜!", "$"                ; сооя┐╜щеня┐╜я┐╜, я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜
-    msgInvalidAccessMode db "я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ режя┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜упа!", "$"     ; сооя┐╜щеня┐╜я┐╜, я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ режя┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜упа
-    msgInvalidFileId db "я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜фикя┐╜я┐╜я┐╜ файя┐╜я┐╜!", "$"  ; сооя┐╜щеня┐╜я┐╜, я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜фикя┐╜я┐╜я┐╜ файя┐╜я┐╜
-    msgPleaseEnterWord db "я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜, я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ слоя┐╜я┐╜ я┐╜я┐╜я┐╜ я┐╜я┐╜ревя┐╜я┐╜я┐╜", "$"
+    msgNotFoundPath db "Путь не найден!", "$"               ; сообщение, что путь не найден
+    msgNotFoundFile db "Файл не найден!", "$"               ; сообщение, что файл не найден
+    msgToManyFilesOpened db "Октрыто много файлов!", "$"   ; сообщение, что открыто слишком много файлов
+    msgAccessDenied db "Доступ запрещён!", "$"                ; сообщение, что доступ запрещён
+    msgInvalidAccessMode db "Неверный режим доступа!", "$"     ; сообщение, что неверный режим доступа
+    msgInvalidFileId db "Неверные идентификатор файла!", "$"  ; сообщение, что неверный идентификатор файла
+    msgPleaseEnterWord db "Пожалуйста, введите слово для перевода", "$"
     msgPleaseEnterWordPlaceholder db ">>> ", "$"
-    msgWordTranslation db "я┐╜я┐╜ревя┐╜я┐╜: ", "$"
-    msgNotFoundTranslation db "я┐╜я┐╜я┐╜ такя┐╜я┐╜я┐╜ слоя┐╜я┐╜ я┐╜ слоя┐╜я┐╜я┐╜!", "$"
+    msgWordTranslation db "Перевод: ", "$"
+    msgNotFoundTranslation db "Нет такого слова в словаре!", "$"
     dictFileName db "./syear/dict.txt", 0
     fileId dw ?
     isFileEnd dw 0
@@ -23,9 +23,9 @@
     splitedLine2 db 254, 0, 254 dup("$")
     inputWord db 254, 0, 254 dup("$")
     exitInput1 db "exit", "$"
-    exitInput2 db "я┐╜я┐╜ход", "$"
+    exitInput2 db "выход", "$"
     clearInput1 db "clear", "$"
-    clearInput2 db "я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜", "$"
+    clearInput2 db "очистить", "$"
 
 .code
 include libs/io.asm
@@ -36,7 +36,7 @@ clearScreen proc
     ret
 clearScreen endp
 
-; я┐╜ывоя┐╜ я┐╜шибя┐╜я┐╜
+; вывод ошибок
 file_error_handler proc
     cmp ax, 02h
     je not_found_error
