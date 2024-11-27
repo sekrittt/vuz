@@ -5,7 +5,7 @@
 .data
     msgNotFoundPath db "Путь не найден!", "$"               ; сообщение, что путь не найден
     msgNotFoundFile db "Файл не найден!", "$"               ; сообщение, что файл не найден
-    msgToManyFilesOpened db "Октрыто много файлов!", "$"   ; сообщение, что открыто слишком много файлов
+    msgToManyFilesOpened db "Открыто много файлов!", "$"   ; сообщение, что открыто слишком много файлов
     msgAccessDenied db "Доступ запрещён!", "$"                ; сообщение, что доступ запрещён
     msgInvalidAccessMode db "Неверный режим доступа!", "$"     ; сообщение, что неверный режим доступа
     msgInvalidFileId db "Неверные идентификатор файла!", "$"  ; сообщение, что неверный идентификатор файла
@@ -13,19 +13,21 @@
     msgPleaseEnterWordPlaceholder db ">>> ", "$"
     msgWordTranslation db "Перевод: ", "$"
     msgNotFoundTranslation db "Нет такого слова в словаре!", "$"
+    msgHelperText db "Нажмите shift для запуска словаря", "$"
     dictFileName db "./syear/dict.txt", 0
     fileId dw ?
     isFileEnd dw 0
     lineBuffer db 254, 0, 254 dup("$")
     lineLength dw 0
     lineStartPos dw 0
-    splitedLine1 db 254, 0, 254 dup("$")
-    splitedLine2 db 254, 0, 254 dup("$")
+    splittedLine1 db 254, 0, 254 dup("$")
+    splittedLine2 db 254, 0, 254 dup("$")
     inputWord db 254, 0, 254 dup("$")
     exitInput1 db "exit", "$"
     exitInput2 db "выход", "$"
     clearInput1 db "clear", "$"
     clearInput2 db "очистить", "$"
+    old_handler dw 0, 0
 
 .code
 include libs/io.asm
@@ -50,43 +52,67 @@ file_error_handler proc
     je invalid_id_error
     cmp ax, 0Ch
     je invalid_access_mode_error
+    jmp kb__exit
 file_error_handler endp
 
 not_found_error proc
     mov ax, offset msgNotFoundFile
     call println
-    call exit
+    jmp kb__exit
 not_found_error endp
 
 path_not_found_error proc
     mov ax, offset msgNotFoundPath
     call println
-    call exit
+    jmp kb__exit
 path_not_found_error endp
 
 to_many_files_opened_error proc
     mov ax, offset msgToManyFilesOpened
     call println
-    call exit
+    jmp kb__exit
 to_many_files_opened_error endp
 
 access_denied_error proc
     mov ax, offset msgAccessDenied
     call println
-    call exit
+    jmp kb__exit
 access_denied_error endp
 
 invalid_id_error proc
     mov ax, offset msgInvalidFileId
     call println
-    call exit
+    jmp kb__exit
 invalid_id_error endp
 
 invalid_access_mode_error proc
     mov ax, offset msgInvalidAccessMode
     call println
-    call exit
+    jmp kb__exit
 invalid_access_mode_error endp
+
+main proc
+    mov ax, @data
+    mov ds, ax
+
+    mov ax, offset msgHelperText
+    call println
+
+    mov ax, 3509h
+    int 21h
+    mov old_handler, bx   ; save old handler
+    mov old_handler+2, es ; save segment address old handler
+
+    push ds ; Save data section
+    mov ax, 2509h
+    mov dx, seg kb_handler
+    mov ds, dx
+    mov dx, offset kb_handler
+    int 21h
+    pop ds ; restore data section
+
+    call exit
+main endp
 
 start proc
         mov ax, @data
@@ -163,13 +189,13 @@ start proc
         mov al, "="
         call splitLine
 
-        mov ax, offset splitedLine1
+        mov ax, offset splittedLine1
         mov bx, offset inputWord + 2
         call cmpLines
         cmp cx, 1
         je finding_loop_end_1
 
-        mov ax, offset splitedLine2
+        mov ax, offset splittedLine2
         mov bx, offset inputWord + 2
         call cmpLines
         cmp cx, 1
@@ -180,14 +206,14 @@ start proc
     finding_loop_end_1:
         ; mov ax, offset msgWordTranslation
         ; call print
-        mov ax, offset splitedLine2
+        mov ax, offset splittedLine2
         call println
         jmp wait_word_loop
 
     finding_loop_end_2:
         ; mov ax, offset msgWordTranslation
         ; call print
-        mov ax, offset splitedLine1
+        mov ax, offset splittedLine1
         call println
         jmp wait_word_loop
 
@@ -197,8 +223,7 @@ start proc
         jmp wait_word_loop
 
     start_loop_exit:
-
-        call exit
+        ret
 start endp
 
 ; si - buffer offset
@@ -307,9 +332,9 @@ splitLine proc
         push si
         push bx
 
-        mov si, offset splitedLine1
+        mov si, offset splittedLine1
         call clearBuffer
-        mov si, offset splitedLine2
+        mov si, offset splittedLine2
         call clearBuffer
 
         mov si, 0
@@ -318,7 +343,7 @@ splitLine proc
         cmp al, byte ptr [lineBuffer + si]
         je splitLine2_loop
         mov bl, byte ptr [lineBuffer + si]
-        mov byte ptr [splitedLine1 + si], bl
+        mov byte ptr [splittedLine1 + si], bl
         inc si
         cmp si, lineLength
         je splitLine_end
@@ -330,7 +355,7 @@ splitLine proc
         mov bh, byte ptr [lineBuffer + si]
         push si
         mov si, cx
-        mov byte ptr [splitedLine2 + si], bh
+        mov byte ptr [splittedLine2 + si], bh
         inc cx
         pop si
         jmp splitLine2_loop
@@ -389,14 +414,32 @@ cmpLines proc
         ret
 cmpLines endp
 
+kb_handler proc
+    pushf
+    in al, 60h
+    cmp al, 2Ah
+    je kb__skip
+    cmp al, 36h
+    je kb__skip
+kb__exit:
+    call dword ptr cs:old_handler
+    mov al, 20h
+    out 20h, al
+    iret
+kb__skip:
+    mov al, 20h
+    out 20h, al
+    call start
+    call dword ptr cs:old_handler
+    mov al, 20h
+    out 20h, al
+    iret
+kb_handler endp
+
 exit proc
     ; Make it resident
-    mov bx, fileId
-    mov ah, 3Eh
-    int 21h
-    jc file_error_handler
-    mov ax, 4C00h ; stop program
+    mov ax, 3100h ; stop program
     int 21h ; dos interrupt
 exit endp
 
-end start
+end main
