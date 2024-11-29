@@ -28,6 +28,7 @@
     clearInput1 db "clear", "$"
     clearInput2 db "очистить", "$"
     old_handler dw 0, 0
+    altPressed dw 0
 
 .code
 include libs/io.asm
@@ -419,6 +420,8 @@ kb_handler proc
     in al, 60h
     cmp al, 2Ah
     je kb__skip
+    cmp al, 38h
+    je kb__alt
     cmp al, 36h
     je kb__skip
 kb__exit:
@@ -426,10 +429,29 @@ kb__exit:
     mov al, 20h
     out 20h, al
     iret
+kb__alt:
+    push ax
+    mov ax, 1
+    mov altPressed, ax
+    pop ax
+    call dword ptr cs:old_handler
+    mov al, 20h
+    out 20h, al
+    iret
 kb__skip:
+    push ax
+    mov ax, altPressed
+    cmp ax, 1
+    pop ax
+    je kb__skip2
     mov al, 20h
     out 20h, al
     call start
+kb__skip2:
+    push ax
+    mov ax, 0
+    mov altPressed, ax
+    pop ax
     call dword ptr cs:old_handler
     mov al, 20h
     out 20h, al
