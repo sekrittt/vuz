@@ -158,7 +158,9 @@ start proc
         add ax, bx
         cmp ax, 1
         je finding_loop_not_found
-        jb finding_loop
+        cmp ax, 0
+        je finding_loop
+
 
         mov al, "="
         call splitLine
@@ -278,7 +280,6 @@ getLine proc
         mov cx, lineLength
         mov ax, isFileEnd
         dec cx
-        dec cx
         add cx, ax
         mov lineLength, cx
         cmp cx, 0
@@ -290,6 +291,16 @@ getLine proc
         mov dx, offset lineBuffer
         int 21h
         jc file_error_handler
+
+        mov si, offset lineBuffer
+        mov cx, lineLength
+        add si, cx
+        dec si
+        cmp byte ptr [si], 0Dh
+        jne getLine_exit
+        mov byte ptr [si], '$'
+        dec cx
+        mov lineLength, cx
         jmp getLine_exit
 
     getLine_exit:

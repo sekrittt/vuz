@@ -9,9 +9,10 @@
     msgAccessDenied db "Доступ запрещён!", "$"                ; сообщение, что доступ запрещён
     msgInvalidAccessMode db "Неверный режим доступа!", "$"     ; сообщение, что неверный режим доступа
     msgInvalidFileId db "Неверные идентификатор файла!", "$"  ; сообщение, что неверный идентификатор файла
-    msgPleaseEnterWord db "Пожалуйста, введите слово для перевода", "$"
+    msgPleaseEnterWord db "                     Пожалуйста, введите слово для перевода", "$"
     msgPleaseEnterWordPlaceholder db ">>> ", "$"
     msgWordTranslation db "Перевод: ", "$"
+    emptyString db "", "$"
     msgNotFoundTranslation db "Нет такого слова в словаре!", "$"
     msgHelperText db "Нажмите shift для запуска словаря", "$"
     dictFileName db "./syear/dict.txt", 0
@@ -185,7 +186,8 @@ start proc
         add ax, bx
         cmp ax, 1
         je finding_loop_not_found
-        jb finding_loop
+        cmp ax, 0
+        je finding_loop
 
         mov al, "="
         call splitLine
@@ -205,15 +207,11 @@ start proc
         jmp finding_loop
 
     finding_loop_end_1:
-        ; mov ax, offset msgWordTranslation
-        ; call print
         mov ax, offset splittedLine2
         call println
         jmp wait_word_loop
 
     finding_loop_end_2:
-        ; mov ax, offset msgWordTranslation
-        ; call print
         mov ax, offset splittedLine1
         call println
         jmp wait_word_loop
@@ -279,7 +277,8 @@ getLine proc
         mov si, offset lineBuffer
         mov bl, byte ptr [si]
         cmp bl, 0Ah ; End of line, if don't work replace to 0Ah
-        jne getLine_loop
+        je getLine_stop
+        jmp getLine_loop
 
     getLine_stop:
 
@@ -302,10 +301,7 @@ getLine proc
         xor bx, bx
 
         mov cx, lineLength
-        mov ax, isFileEnd
         dec cx
-        dec cx
-        add cx, ax
         mov lineLength, cx
         cmp cx, 0
         je getLine_exit
@@ -316,6 +312,16 @@ getLine proc
         mov dx, offset lineBuffer
         int 21h
         jc file_error_handler
+
+        mov si, offset lineBuffer
+        mov cx, lineLength
+        add si, cx
+        dec si
+        cmp byte ptr [si], 0Dh
+        jne getLine_exit
+        mov byte ptr [si], '$'
+        dec cx
+        mov lineLength, cx
         jmp getLine_exit
 
     getLine_exit:
@@ -373,7 +379,7 @@ removeTwoEndBytes proc
     push cx
     mov ch, 0
     mov cl, byte ptr [si + 1] ; Line Length
-    add si, cx ; Add to address of buffer line lenght
+    add si, cx ; Add to address of buffer line length
 
     mov byte ptr [si + 2], '$' ; 0Dh byte
     mov byte ptr [si + 3], '$' ; 0Ah byte
