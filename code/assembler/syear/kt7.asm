@@ -278,9 +278,7 @@ getLine proc
         xor bx, bx
 
         mov cx, lineLength
-        mov ax, isFileEnd
         dec cx
-        add cx, ax
         mov lineLength, cx
         cmp cx, 0
         je getLine_exit
